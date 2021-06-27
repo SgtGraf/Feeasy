@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-        Adapter adapter = new Adapter(this, gm.getGroups());
+        AdapterHome adapter = new AdapterHome(this, gm.getGroups());
         recyclerView = findViewById(R.id.main_recycler);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
