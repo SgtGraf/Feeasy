@@ -10,9 +10,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -22,23 +24,33 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        List<Group> groups = new ArrayList<>();
+        GroupManager gm = new GroupManager(new LinkedList<Group>());
+
+
+        //List<Group> groups = new ArrayList<>();
+        List<GroupMember> members = new ArrayList<>();
+
+
+
+        // Placeholder members
+        members.add(new GroupMember("Roman", true));
+        members.add(new GroupMember("Fabi", false));
+        members.add(new GroupMember("Herwig", false));
+        members.add(new GroupMember("Luki", false));
+        members.add(new GroupMember("Elena", false));
+
+        gm.addGroup(new Group(0,"Gruppe 1", members, 0));
+        gm.addGroup(new Group(1,"Gruppe 2", members, 0));
+        gm.addGroup(new Group(2,"Gruppe 3", members, 0));
+        gm.addGroup(new Group(3,"Gruppe 4", members, 0));
+
 
         // Placeholder Groups
-        groups.add(new Group("Sailing"));
-        groups.add(new Group("Football"));
-        groups.add(new Group("Uni"));
-        groups.add(new Group("Mateys"));
-        groups.add(new Group("Bar Night"));
-        groups.add(new Group("School group"));
-        groups.add(new Group("Never"));
-        groups.add(new Group("Gonna"));
-        groups.add(new Group("Give"));
-        groups.add(new Group("You"));
-        groups.add(new Group("Up"));
+        //groups.add(new Group("Sailing", members));
 
 
-        Adapter adapter = new Adapter(this, groups);
+
+        Adapter adapter = new Adapter(this, gm.getGroups());
         recyclerView = findViewById(R.id.main_recycler);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -50,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

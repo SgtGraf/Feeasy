@@ -1,6 +1,8 @@
 package com.example.feeasy;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +42,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final Adapter.ViewHolder holder, final int position) {
         holder.groupName.setText(groupList.get(position).groupName);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            Intent intent;
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, GroupActivity.class);
+                intent.putExtra("id", groupList.get(position).id);
+
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
