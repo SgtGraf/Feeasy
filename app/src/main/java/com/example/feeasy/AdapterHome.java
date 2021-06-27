@@ -2,7 +2,6 @@ package com.example.feeasy;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
+public class AdapterHome extends RecyclerView.Adapter<AdapterHome.ViewHolder>{
 
     List<Group> groupList;
     Context context;
 
-    public Adapter(Context ct, List<Group> groups) {
+    public AdapterHome(Context ct, List<Group> groups) {
         context = ct;
         groupList = groups;
     }
@@ -35,14 +34,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     @NonNull
     @Override
-    public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterHome.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.group, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final Adapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final AdapterHome.ViewHolder holder, final int position) {
         holder.groupName.setText(groupList.get(position).groupName);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             Intent intent;
@@ -61,6 +60,4 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     public int getItemCount() {
         return groupList.size();
     }
-
-
 }
