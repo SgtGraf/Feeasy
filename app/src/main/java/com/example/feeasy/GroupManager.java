@@ -31,4 +31,15 @@ public class GroupManager {
         return null;
     }
 
+    public static float getFeesPerGroup(Group group){
+        float ret = 0;
+        for (Group g:groups) {
+            if(group == g){
+                for (Fee f:g.fees) {
+                    ret += f.amount;
+                }
+            }
+        }
+        return ret;
+    }
 }

@@ -31,7 +31,7 @@ public class GroupActivity extends AppCompatActivity {
 
         assert group != null;
         groupNameView.setText(group.groupName);
-        totalAmtView.setText(Integer.toString(group.totalFees));
+        totalAmtView.setText(Float.toString( GroupManager.getFeesPerGroup(group)));
 
         Log.i("Fees:", Integer.toString(group.totalFees));
 
