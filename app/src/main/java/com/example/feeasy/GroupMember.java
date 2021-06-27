@@ -12,4 +12,12 @@ public class GroupMember {
         this.name = name;
         this.isAdmin = isAdmin;
     }
+
+    public float getFeeAmount() {
+        return feeAmount;
+    }
+
+    public void setFeeAmount(float feeAmount) {
+        this.feeAmount = feeAmount;
+    }
 }
