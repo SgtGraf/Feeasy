@@ -8,9 +8,9 @@ public class Group {
     List<GroupMember> members;
     int totalFees;
 
-    public Group(int id, String name, List<GroupMember> groupMembers, int totalFees) {
+    public Group(int id, String name, List<GroupMember> groupMembers) {
         this.id = id;
-        this.totalFees = totalFees;
+        totalFees = 0;
         groupName = name;
         members = groupMembers;
     }

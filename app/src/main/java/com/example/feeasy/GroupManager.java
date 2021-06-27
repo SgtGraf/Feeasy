@@ -10,20 +10,16 @@ public class GroupManager {
         groups = groupList;
     }
 
-    public void addGroup(Group group){
+    public static void addGroup(Group group){
         groups.add(group);
     }
 
-    public void removeGroup(Group group){
+    public static void removeGroup(Group group){
         groups.remove(group);
     }
 
-    public List<Group> getGroups() {
+    public static List<Group> getGroups() {
         return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
     }
 
     public static Group getGroupPerID(int id){
@@ -34,4 +30,5 @@ public class GroupManager {
         }
         return null;
     }
+
 }
