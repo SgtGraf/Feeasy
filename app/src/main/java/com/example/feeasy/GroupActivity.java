@@ -27,6 +27,9 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
+        getSupportActionBar().hide();
+
+
         TextView groupNameView = findViewById(R.id.groupName);
         TextView totalAmtView = findViewById(R.id.groupTotal);
 
