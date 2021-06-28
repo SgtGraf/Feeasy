@@ -6,9 +6,9 @@ public class Fee {
     Group group;
     GroupMember groupMember;
     float amount;
-    Date date;
+    String date;
 
-    public Fee(Group group, GroupMember groupMember, float amount, Date date) {
+    public Fee(Group group, GroupMember groupMember, float amount, String date) {
         this.group = group;
         this.groupMember = groupMember;
         this.amount = amount;

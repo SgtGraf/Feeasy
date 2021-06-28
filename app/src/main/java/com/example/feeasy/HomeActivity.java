@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,30 +26,40 @@ public class HomeActivity extends AppCompatActivity {
 
         GroupManager gm = new GroupManager(new LinkedList<Group>());
 
+        /*
+        *
+        * Just for testing
+        *
+         */
 
         //List<Group> groups = new ArrayList<>();
         List<GroupMember> members = new ArrayList<>();
         List<Fee> fees = new ArrayList<>();
+        Group group = new Group(0, "Tolle Gruppe", members, fees);
+        Group group2 = new Group(0, "Nicht so tolle Gruppe", members, fees);
+        GroupMember member = new GroupMember("Roman", true, 1);
+        GroupMember member2 = new GroupMember("Leon", false, 2);
 
+        Fee fee1 = new Fee(group, member, 300,"28.06.2021");
+        Fee fee2 = new Fee(group, member, 12,"28.06.2021");
+        Fee fee3 = new Fee(group, member, 30330,"28.06.2021");
+        Fee fee4 = new Fee(group, member2, 11,"28.06.2021");
+
+        fees.add(fee1);
+        fees.add(fee2);
+        fees.add(fee3);
+        fees.add(fee4);
 
 
         // Placeholder members
-        members.add(new GroupMember("Roman", true, 1));
-        members.add(new GroupMember("Fabi", false,2));
-        members.add(new GroupMember("Herwig", false,3));
-        members.add(new GroupMember("Luki", false,4));
-        members.add(new GroupMember("Elena", false,5));
-        members.add(new GroupMember("Leon", false,6));
+        members.add(member);
+        members.add(member2);
+        GroupManager.addGroup(group);
+        GroupManager.addGroup(group2);
 
-        GroupManager.addGroup(new Group(0,"Gruppe 1", members, fees));
-        GroupManager.addGroup(new Group(1,"Gruppe 2", members, fees));
-        GroupManager.addGroup(new Group(2,"Gruppe 3", members, fees));
-        GroupManager.addGroup(new Group(3,"Gruppe 4", members, fees));
-
-
-        // Placeholder Groups
-        //groups.add(new Group("Sailing", members));
-
+        /*
+        *
+         */
 
 
         AdapterHome adapter = new AdapterHome(this, gm.getGroups());
