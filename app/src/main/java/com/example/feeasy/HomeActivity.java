@@ -35,10 +35,15 @@ public class HomeActivity extends AppCompatActivity {
         //List<Group> groups = new ArrayList<>();
         List<GroupMember> members = new ArrayList<>();
         List<Fee> fees = new ArrayList<>();
-        Group group = new Group(0, "Tolle Gruppe", members, fees);
-        Group group2 = new Group(0, "Nicht so tolle Gruppe", members, fees);
+        Group group = new Group(1337, "Tolle Gruppe", members, fees);
+        Group group2 = new Group(69, "Nicht so tolle Gruppe", members, fees);
         GroupMember member = new GroupMember("Roman", true, 1);
-        GroupMember member2 = new GroupMember("Leon", false, 2);
+        GroupMember member2 = new GroupMember("Fabi", false, 2);
+        GroupMember member3 = new GroupMember("Luki", false, 3);
+        GroupMember member4 = new GroupMember("Leon", false, 4);
+        GroupMember member5 = new GroupMember("Sandro", false, 5);
+        GroupMember member6 = new GroupMember("Herwig", false, 6);
+
 
         Fee fee1 = new Fee(group, member, 300,"28.06.2021");
         Fee fee2 = new Fee(group, member, 12,"28.06.2021");
@@ -54,6 +59,10 @@ public class HomeActivity extends AppCompatActivity {
         // Placeholder members
         members.add(member);
         members.add(member2);
+        members.add(member3);
+        members.add(member4);
+        members.add(member5);
+        members.add(member6);
         GroupManager.addGroup(group);
         GroupManager.addGroup(group2);
 
