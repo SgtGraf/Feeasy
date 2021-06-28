@@ -34,7 +34,6 @@ public class MembersFragment extends Fragment {
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
                 group =  GroupManager.getGroupPerID(groupId);
-                Log.i("ID:", Integer.toString(groupId));
                 assert GroupManager.getGroupPerID(groupId) != null;
                 AdapterMembers adapter = new AdapterMembers(getContext(), GroupManager.getGroupPerID(groupId).members, group);
                 recyclerView = v.findViewById(R.id.group_recycler);
@@ -42,29 +41,7 @@ public class MembersFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
-
-        /*Group group =  GroupManager.getGroupPerID(groupId);
-        Log.i("Group", group.groupName);
-        assert GroupManager.getGroupPerID(groupId) != null;
-        AdapterMembers adapter = new AdapterMembers(v.getContext(), GroupManager.getGroupPerID(groupId).members, group);
-        recyclerView = v.findViewById(R.id.group_recycler);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));*/
-
         return v;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        itemViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-        itemViewModel.getText().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
-            @Override
-            public void onChanged(CharSequence charSequence) {
-                groupId = Integer.parseInt(charSequence.toString());
-                //Log.i("ID:", Integer.toString(groupId));
-            }
-        });
-
-    }
 }

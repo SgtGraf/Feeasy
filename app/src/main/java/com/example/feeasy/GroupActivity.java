@@ -21,7 +21,6 @@ public class GroupActivity extends AppCompatActivity {
     FragmentAdapter fragmentAdapter;
     private ItemViewModel viewModel;
 
-    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +35,27 @@ public class GroupActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
 
-        /*
-            Everything for tabs
-         */
+
+        tabManagment();
+
+        // Get group id from intent
+        Intent intent = getIntent();
+        int id = intent.getIntExtra("id", -1);
+        Group group =  GroupManager.getGroupPerID(id);
+
+        // Set id values for fragments
+        viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
+        viewModel.setText(Integer.toString(id));
+
+        // Set strings
+        assert group != null;
+        groupNameView.setText(group.groupName);
+        totalAmtView.setText(Float.toString(GroupManager.getFeesPerGroup(group)));
+    }
+
+    //public void set
+
+    public void tabManagment(){
         FragmentManager fm = getSupportFragmentManager();
         fragmentAdapter = new FragmentAdapter(fm, getLifecycle());
         viewPager.setAdapter(fragmentAdapter);
@@ -47,21 +64,21 @@ public class GroupActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("History"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-               @Override
-               public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-               }
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-               @Override
-               public void onTabUnselected(TabLayout.Tab tab) {
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-               }
+            }
 
-               @Override
-               public void onTabReselected(TabLayout.Tab tab) {
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-               }
-           });
+            }
+        });
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -69,30 +86,5 @@ public class GroupActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
-
-        /*
-        ---------
-         */
-
-        Intent intent = getIntent();
-        int id = intent.getIntExtra("id", -1);
-        Group group =  GroupManager.getGroupPerID(id);
-
-        viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
-        Log.i("GroupActivity ID:",Integer.toString(id));
-        viewModel.setText(Integer.toString(id));
-
-        assert group != null;
-        groupNameView.setText(group.groupName);
-        totalAmtView.setText(Float.toString(GroupManager.getFeesPerGroup(group)));
-
-        Log.i("Fees:", Integer.toString(group.totalFees));
-
-        assert GroupManager.getGroupPerID(id) != null;
-        AdapterMembers adapter = new AdapterMembers(this, GroupManager.getGroupPerID(id).members, group);
-        recyclerView = findViewById(R.id.group_recycler);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 }

@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FirstFragment extends Fragment {
+public class FeesFragment extends Fragment {
     RecyclerView recyclerView;
 
     private ItemViewModel itemViewModel;
@@ -31,7 +31,6 @@ public class FirstFragment extends Fragment {
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
                 group =  GroupManager.getGroupPerID(groupId);
-                Log.i("ID:", Integer.toString(groupId));
                 assert GroupManager.getGroupPerID(groupId) != null;
                 AdapterFees adapter = new AdapterFees(getContext(), GroupManager.getGroupPerID(groupId).fees, group);
                 recyclerView = v.findViewById(R.id.feeRecycler);

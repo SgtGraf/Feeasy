@@ -16,7 +16,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
         if (position == 1) {
-            return new FirstFragment();
+            return new FeesFragment();
         }
         return new MembersFragment();
     }
