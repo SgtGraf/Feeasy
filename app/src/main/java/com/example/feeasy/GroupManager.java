@@ -1,5 +1,6 @@
 package com.example.feeasy;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 public class GroupManager {
@@ -33,11 +34,17 @@ public class GroupManager {
 
     public static float getFeesPerGroup(Group group){
         float ret = 0;
-        for (Group g:groups) {
-            if(group == g){
-                for (Fee f:g.fees) {
-                    ret += f.amount;
-                }
+        for (Fee f:group.fees) {
+            ret += f.amount;
+        }
+        return ret;
+    }
+
+    public static float getFeesPerMember(Group group, GroupMember member){
+        float ret = 0;
+        for (Fee f:group.fees) {
+            if (member == f.groupMember){
+                ret += f.amount;
             }
         }
         return ret;

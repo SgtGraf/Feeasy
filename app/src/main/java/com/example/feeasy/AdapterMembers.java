@@ -14,12 +14,14 @@ import java.util.List;
 
 public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHolder>{
 
+    Group group;
     List<GroupMember> groupMembers;
     Context context;
 
-    public AdapterMembers(Context ct, List<GroupMember> members) {
+    public AdapterMembers(Context ct, List<GroupMember> members, Group group) {
         context = ct;
         groupMembers = members;
+        this.group = group;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,7 +48,7 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final AdapterMembers.ViewHolder holder, final int position) {
         holder.memberName.setText(groupMembers.get(position).name);
-        holder.memberFees.setText(groupMembers.get(position).feeAmount + "$");
+        holder.memberFees.setText(GroupManager.getFeesPerMember(group, groupMembers.get(position)) + "$");
         holder.memberName.setOnClickListener(new View.OnClickListener() {
             Intent intent;
             @Override
