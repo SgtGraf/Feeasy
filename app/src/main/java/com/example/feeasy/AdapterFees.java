@@ -12,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHolder>{
-
+public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
     Group group;
     List<GroupMember> groupMembers;
+    List<Fee> fees;
     Context context;
 
-    public AdapterMembers(Context ct, List<GroupMember> members, Group group) {
+
+    public AdapterFees(Context ct, List<Fee> fees, Group group) {
         context = ct;
-        groupMembers = members;
+        this.fees = fees;
         this.group = group;
     }
 
@@ -32,23 +33,23 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             memberName = itemView.findViewById(R.id.member_name_fee);
-            memberFees = itemView.findViewById(R.id.member_fee);
+            memberFees = itemView.findViewById(R.id.member_fee_fee);
         }
     }
 
     @NonNull
     @Override
-    public AdapterMembers.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterFees.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.group_member, parent, false);
-        return new AdapterMembers.ViewHolder(view);
+        View view = inflater.inflate(R.layout.fee_list_view, parent, false);
+        return new AdapterFees.ViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull final AdapterMembers.ViewHolder holder, final int position) {
-        holder.memberName.setText(groupMembers.get(position).name);
-        holder.memberFees.setText(GroupManager.getFeesPerMember(group, groupMembers.get(position)) + "$");
+    public void onBindViewHolder(@NonNull final AdapterFees.ViewHolder holder, final int position) {
+        holder.memberName.setText(fees.get(position).groupMember.name);
+        holder.memberFees.setText(fees.get(position).amount + "$");
         holder.memberName.setOnClickListener(new View.OnClickListener() {
             Intent intent;
             @Override
@@ -64,6 +65,6 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
 
     @Override
     public int getItemCount() {
-        return groupMembers.size();
+        return fees.size();
     }
 }

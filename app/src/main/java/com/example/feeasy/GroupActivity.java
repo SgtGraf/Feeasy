@@ -36,7 +36,6 @@ public class GroupActivity extends AppCompatActivity {
 
         TextView groupNameView = findViewById(R.id.groupName);
         TextView totalAmtView = findViewById(R.id.groupTotal);
-        Button btn = findViewById(R.id.btn_new_fee);
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
@@ -48,8 +47,8 @@ public class GroupActivity extends AppCompatActivity {
         fragmentAdapter = new FragmentAdapter(fm, getLifecycle());
         viewPager.setAdapter(fragmentAdapter);
 
-        tabLayout.addTab(tabLayout.newTab().setText("First"));
         tabLayout.addTab(tabLayout.newTab().setText("Members"));
+        tabLayout.addTab(tabLayout.newTab().setText("History"));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                @Override
@@ -99,12 +98,5 @@ public class GroupActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // TODO: open AddFee
-            }
-        });
     }
 }

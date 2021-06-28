@@ -16,9 +16,9 @@ public class FragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
         if (position == 1) {
-            return new MembersFragment();
+            return new FirstFragment();
         }
-        return new FirstFragment();
+        return new MembersFragment();
     }
 
     @Override

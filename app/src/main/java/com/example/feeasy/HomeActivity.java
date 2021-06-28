@@ -45,15 +45,27 @@ public class HomeActivity extends AppCompatActivity {
         GroupMember member6 = new GroupMember("Herwig", false, 6);
 
 
-        Fee fee1 = new Fee(group, member, 300,"28.06.2021");
-        Fee fee2 = new Fee(group, member, 12,"28.06.2021");
-        Fee fee3 = new Fee(group, member, 30330,"28.06.2021");
-        Fee fee4 = new Fee(group, member2, 11,"28.06.2021");
+        Fee fee1 = new Fee(group, member, 5,"28.06.2021");
+        Fee fee2 = new Fee(group, member2, 10,"28.06.2021");
+        Fee fee3 = new Fee(group, member4, 30,"27.06.2021");
+        Fee fee4 = new Fee(group, member2, 2,"27.06.2021");
+        Fee fee5 = new Fee(group, member3, 5,"26.06.2021");
+        Fee fee6 = new Fee(group, member3, 10,"25.06.2021");
+        Fee fee7 = new Fee(group, member4, 100,"25.06.2021");
+        Fee fee8 = new Fee(group, member, 15,"23.06.2021");
+        Fee fee9 = new Fee(group, member, 29,"23.06.2021");
+
 
         fees.add(fee1);
         fees.add(fee2);
         fees.add(fee3);
         fees.add(fee4);
+        fees.add(fee5);
+        fees.add(fee6);
+        fees.add(fee7);
+        fees.add(fee8);
+        fees.add(fee9);
+
 
 
         // Placeholder members
