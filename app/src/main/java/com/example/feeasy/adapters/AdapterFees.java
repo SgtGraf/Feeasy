@@ -1,7 +1,8 @@
-package com.example.feeasy;
+package com.example.feeasy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.Group;
+import com.example.feeasy.entities.GroupMember;
+import com.example.feeasy.R;
 
 import java.util.List;
 
@@ -29,11 +35,13 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
 
         TextView memberName;
         TextView memberFees;
+        View layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             memberName = itemView.findViewById(R.id.member_name_fee);
             memberFees = itemView.findViewById(R.id.member_fee_fee);
+            layout = itemView.findViewById(R.id.group_member_layout);
         }
     }
 
@@ -54,11 +62,7 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
             Intent intent;
             @Override
             public void onClick(View view) {
-
-                Intent intent = new Intent(context, GroupActivity.class);
-                //intent.putExtra("id", groupMembers.get(position).id);
-
-                //context.startActivity(intent);
+                Log.i("What", "Test");
             }
         });
     }

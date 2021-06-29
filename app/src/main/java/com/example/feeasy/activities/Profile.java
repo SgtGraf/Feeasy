@@ -1,8 +1,10 @@
-package com.example.feeasy;
+package com.example.feeasy.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.feeasy.R;
 
 public class Profile extends AppCompatActivity {
 

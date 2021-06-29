@@ -1,4 +1,4 @@
-package com.example.feeasy;
+package com.example.feeasy.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.lang.reflect.Member;
+import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.R;
+import com.example.feeasy.adapters.AdapterHome;
+import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.Group;
+import com.example.feeasy.entities.GroupMember;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,8 +41,9 @@ public class HomeActivity extends AppCompatActivity {
         //List<Group> groups = new ArrayList<>();
         List<GroupMember> members = new ArrayList<>();
         List<Fee> fees = new ArrayList<>();
-        Group group = new Group(1337, "Tolle Gruppe", members, fees);
-        Group group2 = new Group(69, "Nicht so tolle Gruppe", members, fees);
+        List<Fee> presets = new ArrayList<>();
+        Group group = new Group(1337, "Tolle Gruppe", members, fees, presets);
+        Group group2 = new Group(69, "Nicht so tolle Gruppe", members, fees, presets);
         GroupMember member = new GroupMember("Roman", true, 1);
         GroupMember member2 = new GroupMember("Fabi", false, 2);
         GroupMember member3 = new GroupMember("Luki", false, 3);
@@ -45,15 +52,15 @@ public class HomeActivity extends AppCompatActivity {
         GroupMember member6 = new GroupMember("Herwig", false, 6);
 
 
-        Fee fee1 = new Fee(group, member, 5,"28.06.2021");
-        Fee fee2 = new Fee(group, member2, 10,"28.06.2021");
-        Fee fee3 = new Fee(group, member4, 30,"27.06.2021");
-        Fee fee4 = new Fee(group, member2, 2,"27.06.2021");
-        Fee fee5 = new Fee(group, member3, 5,"26.06.2021");
-        Fee fee6 = new Fee(group, member3, 10,"25.06.2021");
-        Fee fee7 = new Fee(group, member4, 100,"25.06.2021");
-        Fee fee8 = new Fee(group, member, 15,"23.06.2021");
-        Fee fee9 = new Fee(group, member, 29,"23.06.2021");
+        Fee fee1 = new Fee("Too late",group, member, 5,"28.06.2021");
+        Fee fee2 = new Fee("Lost challenge", group, member2, 10,"28.06.2021");
+        Fee fee3 = new Fee("Got rickrolled", group, member4, 30,"27.06.2021");
+        Fee fee4 = new Fee("Too late",group, member2, 2,"27.06.2021");
+        Fee fee5 = new Fee("something", group, member3, 5,"26.06.2021");
+        Fee fee6 = new Fee("whatever", group, member3, 10,"25.06.2021");
+        Fee fee7 = new Fee("Did not show up", group, member4, 100,"25.06.2021");
+        Fee fee8 = new Fee("Just deserves it", group, member, 15,"23.06.2021");
+        Fee fee9 = new Fee("Inted", group, member, 29,"23.06.2021");
 
 
         fees.add(fee1);
@@ -65,6 +72,9 @@ public class HomeActivity extends AppCompatActivity {
         fees.add(fee7);
         fees.add(fee8);
         fees.add(fee9);
+
+        presets.add(fee1);
+        presets.add(fee2);
 
 
 

@@ -1,4 +1,4 @@
-package com.example.feeasy;
+package com.example.feeasy.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FirstFragment extends Fragment {
+import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.dataManagement.ItemViewModel;
+import com.example.feeasy.R;
+import com.example.feeasy.adapters.AdapterFees;
+import com.example.feeasy.entities.Group;
+
+public class FeesFragment extends Fragment {
     RecyclerView recyclerView;
 
     private ItemViewModel itemViewModel;
@@ -31,7 +36,6 @@ public class FirstFragment extends Fragment {
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
                 group =  GroupManager.getGroupPerID(groupId);
-                Log.i("ID:", Integer.toString(groupId));
                 assert GroupManager.getGroupPerID(groupId) != null;
                 AdapterFees adapter = new AdapterFees(getContext(), GroupManager.getGroupPerID(groupId).fees, group);
                 recyclerView = v.findViewById(R.id.feeRecycler);
