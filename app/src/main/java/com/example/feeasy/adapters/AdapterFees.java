@@ -35,6 +35,7 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
 
         TextView memberName;
         TextView memberFees;
+        TextView feeName;
         View layout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -42,6 +43,7 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
             memberName = itemView.findViewById(R.id.member_name_fee);
             memberFees = itemView.findViewById(R.id.member_fee_fee);
             layout = itemView.findViewById(R.id.group_member_layout);
+            feeName = itemView.findViewById(R.id.fee_name_fee);
         }
     }
 
@@ -58,6 +60,7 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
     public void onBindViewHolder(@NonNull final AdapterFees.ViewHolder holder, final int position) {
         holder.memberName.setText(fees.get(position).groupMember.name);
         holder.memberFees.setText(fees.get(position).amount + "$");
+        holder.feeName.setText(fees.get(position).name);
         holder.memberName.setOnClickListener(new View.OnClickListener() {
             Intent intent;
             @Override
