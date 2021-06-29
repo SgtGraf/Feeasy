@@ -14,12 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.feeasy.R;
-import com.example.feeasy.adapters.AdapterFragmentGroupMember;
-import com.example.feeasy.adapters.AdapterMembers;
 import com.example.feeasy.adapters.AdapterUserFees;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.entities.Group;
+import com.example.feeasy.entities.GroupMember;
 
 public class UserFeesFragment extends Fragment {
 
@@ -27,6 +26,8 @@ public class UserFeesFragment extends Fragment {
     private ItemViewModel itemViewModel;
     int groupId;
     Group group;
+    GroupMember groupMember;
+    AdapterUserFees adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,19 +37,44 @@ public class UserFeesFragment extends Fragment {
         // Inflate the layout for this fragment
 
         itemViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-        itemViewModel.getText().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
+        itemViewModel.getMember().observe(getViewLifecycleOwner(), new Observer<GroupMember>() {
             @Override
-            public void onChanged(CharSequence charSequence) {
-                groupId = Integer.parseInt(charSequence.toString());
-                group =  GroupManager.getGroupPerID(groupId);
-                assert GroupManager.getGroupPerID(groupId) != null;
-                Log.i("Group ID FEE FRAGMENT", charSequence.toString());
-                AdapterUserFees adapter = new AdapterUserFees(getContext(), GroupManager.getGroupPerID(groupId).presets, group);
+            public void onChanged(GroupMember member) {
+                groupMember = member;
+            }
+        });
+
+        itemViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
+            @Override
+            public void onChanged(Group group) {
+                adapter = new AdapterUserFees(getContext(), group.presets, group, groupMember);
                 recyclerView = v.findViewById(R.id.recycler_group_member);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
         });
+
+
+
+        /*itemViewModel.getGroupId().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
+            @Override
+            public void onChanged(CharSequence charSequence) {
+                groupId = Integer.parseInt(charSequence.toString());
+                group =  GroupManager.getGroupByID(groupId);
+                assert GroupManager.getGroupByID(groupId) != null;
+                Log.i("Group ID FEE FRAGMENT", charSequence.toString());
+                AdapterUserFees adapter = new AdapterUserFees(getContext(), GroupManager.getGroupByID(groupId).presets, group);
+                recyclerView = v.findViewById(R.id.recycler_group_member);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+        });*/
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }

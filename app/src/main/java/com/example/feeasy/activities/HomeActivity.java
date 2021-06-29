@@ -10,12 +10,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterHome;
 import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 
@@ -25,12 +28,21 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    AdapterHome adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        GroupManager gm = new GroupManager(new LinkedList<Group>());
+        View buttonAddGroup = findViewById(R.id.button_addGroup);
+
+        buttonAddGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddGroupActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /*
         *
@@ -38,62 +50,34 @@ public class HomeActivity extends AppCompatActivity {
         *
          */
 
-        //List<Group> groups = new ArrayList<>();
-        List<GroupMember> members = new ArrayList<>();
-        List<Fee> fees = new ArrayList<>();
-        List<Fee> presets = new ArrayList<>();
-        Group group = new Group(1337, "Tolle Gruppe", members, fees, presets);
-        Group group2 = new Group(69, "Nicht so tolle Gruppe", members, fees, presets);
-        GroupMember member = new GroupMember("Roman", true, 1);
-        GroupMember member2 = new GroupMember("Fabi", false, 2);
-        GroupMember member3 = new GroupMember("Luki", false, 3);
-        GroupMember member4 = new GroupMember("Leon", false, 4);
-        GroupMember member5 = new GroupMember("Sandro", false, 5);
-        GroupMember member6 = new GroupMember("Herwig", false, 6);
+        Group g1 = GroupManager.createGroup("Nice");
+        Group g2 = GroupManager.createGroup("Not nice");
 
+        GroupMember gm1 = GroupManager.createMember("Roman");
+        GroupMember gm2 =  GroupManager.createMember("Fabi");
+        GroupMember gm3 =  GroupManager.createMember("Leon");
 
-        Fee fee1 = new Fee("Too late",group, member, 5,"28.06.2021");
-        Fee fee2 = new Fee("Lost challenge", group, member2, 10,"28.06.2021");
-        Fee fee3 = new Fee("Got rickrolled", group, member4, 30,"27.06.2021");
-        Fee fee4 = new Fee("Too late",group, member2, 2,"27.06.2021");
-        Fee fee5 = new Fee("something", group, member3, 5,"26.06.2021");
-        Fee fee6 = new Fee("whatever", group, member3, 10,"25.06.2021");
-        Fee fee7 = new Fee("Did not show up", group, member4, 100,"25.06.2021");
-        Fee fee8 = new Fee("Just deserves it", group, member, 15,"23.06.2021");
-        Fee fee9 = new Fee("Inted", group, member, 29,"23.06.2021");
+        GroupManager.addGroupMember(gm1, g1);
+        GroupManager.addGroupMember(gm2, g1);
+        GroupManager.addGroupMember(gm1, g2);
+        GroupManager.addGroupMember(gm3, g2);
 
+        GroupManager.createFee("Too late", g1, gm1, 50, "29.06.2021");
+        GroupManager.createFee("Missed Penalty", g1, gm1, 10, "29.06.2021");
+        GroupManager.createFee("Lost Bet", g1, gm2, 20, "28.06.2021");
+        GroupManager.createFee("Got rick rolled", g1, gm1, 800, "28.06.2021");
+        GroupManager.createFee("Too late", g2, gm3, 30, "27.06.2021");
+        GroupManager.createFee("Too late", g2, gm1, 69, "27.06.2021");
 
-        fees.add(fee1);
-        fees.add(fee2);
-        fees.add(fee3);
-        fees.add(fee4);
-        fees.add(fee5);
-        fees.add(fee6);
-        fees.add(fee7);
-        fees.add(fee8);
-        fees.add(fee9);
+        GroupManager.createFeePreset("Too late", g1, 25);
+        GroupManager.createFeePreset("Hit the ground to hard", g1, 50);
 
-        presets.add(fee1);
-        presets.add(fee2);
-
-
-
-        // Placeholder members
-        members.add(member);
-        members.add(member2);
-        members.add(member3);
-        members.add(member4);
-        members.add(member5);
-        members.add(member6);
-        GroupManager.addGroup(group);
-        GroupManager.addGroup(group2);
-
+        GroupManager.setLoggedIn(gm1);
         /*
         *
          */
 
-
-        AdapterHome adapter = new AdapterHome(this, gm.getGroups());
+        adapter = new AdapterHome(this, GroupManager.getGroups());
         recyclerView = findViewById(R.id.main_recycler);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -125,5 +109,11 @@ public class HomeActivity extends AppCompatActivity {
             default: super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }

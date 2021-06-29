@@ -42,17 +42,18 @@ public class GroupActivity extends AppCompatActivity {
 
         // Get group id from intent
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", -1);
-        Group group =  GroupManager.getGroupPerID(id);
+        int id = intent.getIntExtra("groupId", -1);
+        Group group =  GroupManager.getGroupByID(id);
 
         // Set id values for fragments
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
-        viewModel.setText(Integer.toString(id));
+        viewModel.setGroupId(Integer.toString(id));
+        viewModel.setGroup(group);
 
         // Set strings
         assert group != null;
         groupNameView.setText(group.groupName);
-        totalAmtView.setText(Float.toString(GroupManager.getFeesPerGroup(group)));
+        totalAmtView.setText(Float.toString(GroupManager.getFeesByGroup(group)));
     }
 
     //public void set
