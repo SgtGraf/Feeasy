@@ -31,7 +31,7 @@ public class FeesFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_fees, container, false);
 
         itemViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-        itemViewModel.getText().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
+        itemViewModel.getGroupId().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
             @Override
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());

@@ -25,6 +25,7 @@ public class MembersFragment extends Fragment {
     private ItemViewModel itemViewModel;
     int groupId;
     Group group;
+    AdapterMembers adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,7 +33,17 @@ public class MembersFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_members, container, false);
 
         itemViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-        itemViewModel.getText().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
+        itemViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
+            @Override
+            public void onChanged(Group grp) {
+                group = grp;
+                adapter = new AdapterMembers(getContext(), group.members, group);
+                recyclerView = v.findViewById(R.id.group_recycler);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+        });
+        /*itemViewModel.getGroupId().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
             @Override
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
@@ -43,8 +54,12 @@ public class MembersFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
-        });
+        });*/
         return v;
     }
-
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
 }

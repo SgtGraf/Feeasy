@@ -47,7 +47,8 @@ public class GroupActivity extends AppCompatActivity {
 
         // Set id values for fragments
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
-        viewModel.setText(Integer.toString(id));
+        viewModel.setGroupId(Integer.toString(id));
+        viewModel.setGroup(group);
 
         // Set strings
         assert group != null;

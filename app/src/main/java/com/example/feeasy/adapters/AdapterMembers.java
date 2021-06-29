@@ -57,7 +57,7 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final AdapterMembers.ViewHolder holder, final int position) {
         holder.memberName.setText(groupMembers.get(position).name);
-        holder.memberFees.setText(GroupManager.getFeesByMember(group, groupMembers.get(position)) + "$");
+        holder.memberFees.setText(GroupManager.getFeesByMember(group,groupMembers.get(position)) + "$");
         holder.clickableView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

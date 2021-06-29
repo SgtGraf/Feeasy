@@ -18,6 +18,7 @@ import com.example.feeasy.adapters.AdapterUserFees;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.entities.Group;
+import com.example.feeasy.entities.GroupMember;
 
 public class UserFeesFragment extends Fragment {
 
@@ -25,6 +26,8 @@ public class UserFeesFragment extends Fragment {
     private ItemViewModel itemViewModel;
     int groupId;
     Group group;
+    GroupMember groupMember;
+    AdapterUserFees adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +37,26 @@ public class UserFeesFragment extends Fragment {
         // Inflate the layout for this fragment
 
         itemViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-        itemViewModel.getText().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
+        itemViewModel.getMember().observe(getViewLifecycleOwner(), new Observer<GroupMember>() {
+            @Override
+            public void onChanged(GroupMember member) {
+                groupMember = member;
+            }
+        });
+
+        itemViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
+            @Override
+            public void onChanged(Group group) {
+                adapter = new AdapterUserFees(getContext(), group.presets, group, groupMember);
+                recyclerView = v.findViewById(R.id.recycler_group_member);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+        });
+
+
+
+        /*itemViewModel.getGroupId().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
             @Override
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
@@ -46,7 +68,13 @@ public class UserFeesFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
-        });
+        });*/
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }

@@ -7,7 +7,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.feeasy.R;
@@ -46,9 +45,12 @@ public class GroupMemberActivity extends AppCompatActivity {
 
 
         // Pass group ID to Fragment
-        Log.i("Group ID before passs", Integer.toString(groupId));
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
-        viewModel.setText(Integer.toString(groupId));
+        viewModel.setGroupId(Integer.toString(groupId));
+        viewModel.setGroup(group);
+        viewModel.setMember(member);
+
+        //viewModel.setMemberId(group);
 
 
         // set Views
