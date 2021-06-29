@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.R;
-import com.example.feeasy.adapters.FragmentAdapter;
+import com.example.feeasy.adapters.AdapterFragment;
 import com.example.feeasy.entities.Group;
 import com.google.android.material.tabs.TabLayout;
 
@@ -20,7 +20,7 @@ public class GroupActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 viewPager;
-    FragmentAdapter fragmentAdapter;
+    AdapterFragment fragmentAdapter;
     private ItemViewModel viewModel;
 
     @Override
@@ -59,7 +59,7 @@ public class GroupActivity extends AppCompatActivity {
 
     public void tabManagment(){
         FragmentManager fm = getSupportFragmentManager();
-        fragmentAdapter = new FragmentAdapter(fm, getLifecycle());
+        fragmentAdapter = new AdapterFragment(fm, getLifecycle());
         viewPager.setAdapter(fragmentAdapter);
 
         tabLayout.addTab(tabLayout.newTab().setText("Members"));
