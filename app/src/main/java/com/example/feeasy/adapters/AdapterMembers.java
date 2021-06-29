@@ -66,7 +66,7 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
                 // TODO: Open quick fee
                 Log.i("NAME", groupMembers.get(position).name);
                 Intent intent = new Intent(context, GroupMemberActivity.class);
-                intent.putExtra("id", groupMembers.get(position).id);
+                intent.putExtra("memberId", groupMembers.get(position).id);
                 intent.putExtra("groupId", group.id);
 
                 context.startActivity(intent);
