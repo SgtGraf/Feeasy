@@ -1,13 +1,13 @@
-package com.example.feeasy;
+package com.example.feeasy.entities;
 
 import java.util.List;
 
 public class Group {
-    int id;
-    String groupName;
-    List<GroupMember> members;
-    List<Fee> fees;
-    int totalFees;
+    public int id;
+    public String groupName;
+    public List<GroupMember> members;
+    public List<Fee> fees;
+    public int totalFees;
 
 
     public Group(int id, String name, List<GroupMember> groupMembers, List<Fee> fees) {

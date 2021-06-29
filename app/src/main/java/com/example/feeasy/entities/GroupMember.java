@@ -1,10 +1,10 @@
-package com.example.feeasy;
+package com.example.feeasy.entities;
 
 public class GroupMember {
-    int id;
-    String name;
-    float feeAmount;
-    boolean isAdmin;
+    public int id;
+    public String name;
+    public float feeAmount;
+    public boolean isAdmin;
 
     public GroupMember(String name, boolean isAdmin, int id) {
         feeAmount = 0;

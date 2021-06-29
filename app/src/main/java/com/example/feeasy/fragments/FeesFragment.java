@@ -1,4 +1,4 @@
-package com.example.feeasy;
+package com.example.feeasy.fragments;
 
 import android.os.Bundle;
 
@@ -8,10 +8,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.dataManagement.ItemViewModel;
+import com.example.feeasy.R;
+import com.example.feeasy.adapters.AdapterFees;
+import com.example.feeasy.entities.Group;
 
 public class FeesFragment extends Fragment {
     RecyclerView recyclerView;

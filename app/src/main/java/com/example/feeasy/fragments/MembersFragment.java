@@ -1,19 +1,22 @@
-package com.example.feeasy;
+package com.example.feeasy.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.dataManagement.ItemViewModel;
+import com.example.feeasy.R;
+import com.example.feeasy.adapters.AdapterMembers;
+import com.example.feeasy.entities.Group;
 
 public class MembersFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.feeasy;
+package com.example.feeasy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.feeasy.entities.Group;
+import com.example.feeasy.activities.GroupActivity;
+import com.example.feeasy.R;
 
 import java.util.List;
 

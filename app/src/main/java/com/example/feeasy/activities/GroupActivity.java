@@ -1,17 +1,19 @@
-package com.example.feeasy;
+package com.example.feeasy.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
+import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.dataManagement.ItemViewModel;
+import com.example.feeasy.R;
+import com.example.feeasy.adapters.FragmentAdapter;
+import com.example.feeasy.entities.Group;
 import com.google.android.material.tabs.TabLayout;
 
 public class GroupActivity extends AppCompatActivity {

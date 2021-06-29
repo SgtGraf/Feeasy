@@ -1,4 +1,4 @@
-package com.example.feeasy;
+package com.example.feeasy.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.lang.reflect.Member;
+import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.R;
+import com.example.feeasy.adapters.AdapterHome;
+import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.Group;
+import com.example.feeasy.entities.GroupMember;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

@@ -1,12 +1,10 @@
-package com.example.feeasy;
-
-import java.util.Date;
+package com.example.feeasy.entities;
 
 public class Fee {
-    Group group;
-    GroupMember groupMember;
-    float amount;
-    String date;
+    public Group group;
+    public GroupMember groupMember;
+    public float amount;
+    public String date;
 
     public Fee(Group group, GroupMember groupMember, float amount, String date) {
         this.group = group;

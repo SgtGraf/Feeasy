@@ -1,6 +1,9 @@
-package com.example.feeasy;
+package com.example.feeasy.dataManagement;
 
-import java.lang.reflect.Member;
+import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.Group;
+import com.example.feeasy.entities.GroupMember;
+
 import java.util.List;
 
 public class GroupManager {

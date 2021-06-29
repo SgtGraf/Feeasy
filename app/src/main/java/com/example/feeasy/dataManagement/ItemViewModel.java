@@ -1,4 +1,4 @@
-package com.example.feeasy;
+package com.example.feeasy.dataManagement;
 
 import android.content.ClipData;
 
