@@ -1,6 +1,7 @@
 package com.example.feeasy.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.feeasy.activities.GroupActivity;
+import com.example.feeasy.activities.GroupMemberActivity;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.GroupMember;
@@ -62,6 +65,11 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
 
                 // TODO: Open quick fee
                 Log.i("NAME", groupMembers.get(position).name);
+                Intent intent = new Intent(context, GroupMemberActivity.class);
+                intent.putExtra("id", groupMembers.get(position).id);
+                intent.putExtra("groupId", group.id);
+
+                context.startActivity(intent);
             }
         });
     }
