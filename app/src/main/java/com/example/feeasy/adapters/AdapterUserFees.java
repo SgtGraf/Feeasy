@@ -1,8 +1,6 @@
 package com.example.feeasy.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.feeasy.R;
-import com.example.feeasy.activities.GroupMemberActivity;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.Fee;
 import com.example.feeasy.entities.Group;
-import com.example.feeasy.entities.GroupMember;
 
 import java.util.List;
 
@@ -34,11 +29,13 @@ public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView presetName;
+        TextView presetAmount;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            presetName = itemView.findViewById(R.id.placeholder_preset);
+            presetName = itemView.findViewById(R.id.fee_preset_fee_name);
+            presetAmount = itemView.findViewById(R.id.fee_preset_amount);
         }
     }
 
@@ -52,8 +49,10 @@ public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull AdapterUserFees.ViewHolder holder, int position) {
+        Fee preset = group.presets.get(position);
 
-        holder.presetName.setText(group.presets.get(position).name);
+        holder.presetName.setText(preset.name);
+        holder.presetAmount.setText(preset.amount + "$");
     }
 
     @Override
