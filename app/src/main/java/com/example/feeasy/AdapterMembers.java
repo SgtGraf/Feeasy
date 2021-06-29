@@ -2,10 +2,12 @@ package com.example.feeasy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +30,13 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
 
         TextView memberName;
         TextView memberFees;
+        View clickableView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             memberName = itemView.findViewById(R.id.member_name_fee);
             memberFees = itemView.findViewById(R.id.member_fee);
+            clickableView = itemView.findViewById(R.id.gm_clickable_view);
         }
     }
 
@@ -49,15 +53,12 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
     public void onBindViewHolder(@NonNull final AdapterMembers.ViewHolder holder, final int position) {
         holder.memberName.setText(groupMembers.get(position).name);
         holder.memberFees.setText(GroupManager.getFeesPerMember(group, groupMembers.get(position)) + "$");
-        holder.memberName.setOnClickListener(new View.OnClickListener() {
-            Intent intent;
+        holder.clickableView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(context, GroupActivity.class);
-                //intent.putExtra("id", groupMembers.get(position).id);
-
-                //context.startActivity(intent);
+                // TODO: Open quick fee
+                Log.i("NAME", groupMembers.get(position).name);
             }
         });
     }
