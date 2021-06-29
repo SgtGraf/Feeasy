@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.feeasy.activities.GroupActivity;
 import com.example.feeasy.activities.GroupMemberActivity;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.dataManagement.GroupManager;
@@ -58,7 +57,7 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final AdapterMembers.ViewHolder holder, final int position) {
         holder.memberName.setText(groupMembers.get(position).name);
-        holder.memberFees.setText(GroupManager.getFeesPerMember(group, groupMembers.get(position)) + "$");
+        holder.memberFees.setText(GroupManager.getFeesByMember(group, groupMembers.get(position)) + "$");
         holder.clickableView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

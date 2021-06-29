@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.feeasy.R;
-import com.example.feeasy.adapters.AdapterFragmentGroupMember;
-import com.example.feeasy.adapters.AdapterMembers;
 import com.example.feeasy.adapters.AdapterUserFees;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
@@ -40,10 +38,10 @@ public class UserFeesFragment extends Fragment {
             @Override
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
-                group =  GroupManager.getGroupPerID(groupId);
-                assert GroupManager.getGroupPerID(groupId) != null;
+                group =  GroupManager.getGroupByID(groupId);
+                assert GroupManager.getGroupByID(groupId) != null;
                 Log.i("Group ID FEE FRAGMENT", charSequence.toString());
-                AdapterUserFees adapter = new AdapterUserFees(getContext(), GroupManager.getGroupPerID(groupId).presets, group);
+                AdapterUserFees adapter = new AdapterUserFees(getContext(), GroupManager.getGroupByID(groupId).presets, group);
                 recyclerView = v.findViewById(R.id.recycler_group_member);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

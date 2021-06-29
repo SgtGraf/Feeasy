@@ -53,7 +53,7 @@ public class AdapterHome extends RecyclerView.Adapter<AdapterHome.ViewHolder>{
             public void onClick(View view) {
 
                 Intent intent = new Intent(context, GroupActivity.class);
-                intent.putExtra("id", groupList.get(position).id);
+                intent.putExtra("groupId", groupList.get(position).id);
 
                 context.startActivity(intent);
             }

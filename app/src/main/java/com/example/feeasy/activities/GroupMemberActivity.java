@@ -11,7 +11,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.feeasy.R;
-import com.example.feeasy.adapters.AdapterFragmentGroup;
 import com.example.feeasy.adapters.AdapterFragmentGroupMember;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
@@ -42,8 +41,8 @@ public class GroupMemberActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int groupId = intent.getIntExtra("groupId", -1);
         int memberId = intent.getIntExtra("memberId", -1);
-        Group group = GroupManager.getGroupPerID(groupId);
-        GroupMember member = GroupManager.getMemberFromGroup(group, memberId);
+        Group group = GroupManager.getGroupByID(groupId);
+        GroupMember member = GroupManager.getMemberFromGroupById(group, memberId);
 
 
         // Pass group ID to Fragment

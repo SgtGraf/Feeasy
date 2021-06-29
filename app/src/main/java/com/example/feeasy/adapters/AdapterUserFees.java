@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.feeasy.R;
 import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 
 import java.util.List;
@@ -18,10 +20,11 @@ import java.util.List;
 public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHolder> {
 
     Group group;
-    List<Fee> presets;
+    List<FeePreset> presets;
     Context context;
+    ConstraintLayout constraintLayout;
 
-    public AdapterUserFees(Context ct, List<Fee> presets, Group group) {
+    public AdapterUserFees(Context ct, List<FeePreset> presets, Group group) {
         context = ct;
         this.presets = presets;
         this.group = group;
@@ -49,7 +52,7 @@ public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull AdapterUserFees.ViewHolder holder, int position) {
-        Fee preset = group.presets.get(position);
+        FeePreset preset = group.presets.get(position);
 
         holder.presetName.setText(preset.name);
         holder.presetAmount.setText(preset.amount + "$");

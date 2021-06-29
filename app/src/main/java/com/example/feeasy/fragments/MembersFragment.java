@@ -36,9 +36,9 @@ public class MembersFragment extends Fragment {
             @Override
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
-                group =  GroupManager.getGroupPerID(groupId);
-                assert GroupManager.getGroupPerID(groupId) != null;
-                AdapterMembers adapter = new AdapterMembers(getContext(), GroupManager.getGroupPerID(groupId).members, group);
+                group =  GroupManager.getGroupByID(groupId);
+                assert GroupManager.getGroupByID(groupId) != null;
+                AdapterMembers adapter = new AdapterMembers(getContext(), GroupManager.getGroupByID(groupId).members, group);
                 recyclerView = v.findViewById(R.id.group_recycler);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

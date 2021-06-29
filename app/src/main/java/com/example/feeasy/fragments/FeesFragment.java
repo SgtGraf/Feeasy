@@ -35,9 +35,9 @@ public class FeesFragment extends Fragment {
             @Override
             public void onChanged(CharSequence charSequence) {
                 groupId = Integer.parseInt(charSequence.toString());
-                group =  GroupManager.getGroupPerID(groupId);
-                assert GroupManager.getGroupPerID(groupId) != null;
-                AdapterFees adapter = new AdapterFees(getContext(), GroupManager.getGroupPerID(groupId).fees, group);
+                group =  GroupManager.getGroupByID(groupId);
+                assert GroupManager.getGroupByID(groupId) != null;
+                AdapterFees adapter = new AdapterFees(getContext(), GroupManager.getGroupByID(groupId).fees, group);
                 recyclerView = v.findViewById(R.id.feeRecycler);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
