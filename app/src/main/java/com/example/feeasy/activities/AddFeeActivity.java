@@ -43,8 +43,9 @@ public class AddFeeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = feeName.getText().toString().trim();
-                if(name.length() > 0 && name.length() <= 100){
-                    float amount = Float.parseFloat(feeAmount.getText().toString().trim());
+                String amountValue = feeAmount.getText().toString().trim();
+                if(name.length() > 0 && name.length() <= 100 && !amountValue.isEmpty()){
+                    float amount = Float.parseFloat(amountValue);
                     if(amount > 0){
                         GroupManager.createFee(name,group,member,amount,"00.00.0000");
                         if(saveAsPreset.isChecked()){
@@ -60,7 +61,7 @@ public class AddFeeActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Fee name cannot be longer than 100 characters.",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"Please enter a fee name.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please enter fee name and amount.",Toast.LENGTH_SHORT).show();
                 }
             }
         });

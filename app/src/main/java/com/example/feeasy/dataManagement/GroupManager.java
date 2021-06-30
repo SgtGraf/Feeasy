@@ -61,6 +61,15 @@ public class GroupManager {
         return list;
     }
 
+    public static GroupMember getMemberByName(String name){
+        for (GroupMember member:members){
+            if (member.name.equals(name)){
+                return member;
+            }
+        }
+        return null;
+    }
+
     public static GroupMember getMemberFromGroupById(Group group, int memberId){
         for (GroupMember member:group.members) {
             if(member.id == memberId){

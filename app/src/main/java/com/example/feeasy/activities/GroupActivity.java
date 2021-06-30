@@ -1,5 +1,6 @@
 package com.example.feeasy.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -7,7 +8,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
@@ -30,8 +35,6 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-
-        getSupportActionBar().hide();
 
         TextView groupNameView = findViewById(R.id.groupName);
         totalAmtView = findViewById(R.id.groupTotal);
@@ -96,5 +99,20 @@ public class GroupActivity extends AppCompatActivity {
     protected void onResume() {
         totalAmtView.setText(Float.toString(GroupManager.getFeeSumByGroup(group)));
         super.onResume();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_group, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(this, AddMemberActivity.class);
+        intent.putExtra("groupId", group.id);
+        startActivity(intent);
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.feeasy.R;
 import com.example.feeasy.activities.AddFeeActivity;
@@ -55,7 +56,7 @@ public class UserFeesFragment extends Fragment {
             }
         });
 
-        ImageButton addFeeButton = v.findViewById(R.id.add_fee_button);
+        ImageView addFeeButton = v.findViewById(R.id.add_fee_button);
         addFeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
