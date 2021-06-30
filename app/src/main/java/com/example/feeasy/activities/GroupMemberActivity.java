@@ -34,8 +34,6 @@ public class GroupMemberActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager_groupmember_activity);
         membername = findViewById(R.id.activity_groupmember_name);
 
-        tabManagment();
-
         // Get group/member ID from Intent
         Intent intent = getIntent();
         int groupId = intent.getIntExtra("groupId", -1);
@@ -49,15 +47,15 @@ public class GroupMemberActivity extends AppCompatActivity {
         viewModel.setGroupId(Integer.toString(groupId));
         viewModel.setGroup(group);
         viewModel.setMember(member);
-
         //viewModel.setMemberId(group);
 
+        tabManagement();
 
         // set Views
         membername.setText(member.name);
     }
 
-    public void tabManagment(){
+    public void tabManagement(){
         FragmentManager fm = getSupportFragmentManager();
         fragmentAdapter = new AdapterFragmentGroupMember(fm, getLifecycle());
         viewPager.setAdapter(fragmentAdapter);

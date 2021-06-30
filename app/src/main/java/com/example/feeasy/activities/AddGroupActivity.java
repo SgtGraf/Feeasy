@@ -37,9 +37,7 @@ public class AddGroupActivity extends AppCompatActivity {
                 if(!name.isEmpty()){
                     Group group = GroupManager.createGroup(name);
                     GroupManager.addGroupMember(GroupManager.getLoggedIn(), group);
-                    Intent intent = new Intent(getApplicationContext(), GroupActivity.class);
-                    intent.putExtra("groupId", group.id);
-                    startActivity(intent);
+                    onBackPressed();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Please enter a group name", Toast.LENGTH_SHORT).show();

@@ -22,6 +22,9 @@ public class GroupActivity extends AppCompatActivity {
     ViewPager2 viewPager;
     AdapterFragmentGroup fragmentAdapter;
     private ItemViewModel viewModel;
+    TextView totalAmtView;
+
+    Group group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +33,18 @@ public class GroupActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
-
         TextView groupNameView = findViewById(R.id.groupName);
-        TextView totalAmtView = findViewById(R.id.groupTotal);
+        totalAmtView = findViewById(R.id.groupTotal);
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
-
 
         tabManagment();
 
         // Get group id from intent
         Intent intent = getIntent();
         int id = intent.getIntExtra("groupId", -1);
-        Group group =  GroupManager.getGroupByID(id);
+        group =  GroupManager.getGroupByID(id);
 
         // Set id values for fragments
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
@@ -53,7 +54,7 @@ public class GroupActivity extends AppCompatActivity {
         // Set strings
         assert group != null;
         groupNameView.setText(group.groupName);
-        totalAmtView.setText(Float.toString(GroupManager.getFeesByGroup(group)));
+        totalAmtView.setText(Float.toString(GroupManager.getFeeSumByGroup(group)));
     }
 
     //public void set
@@ -89,5 +90,11 @@ public class GroupActivity extends AppCompatActivity {
                 tabLayout.selectTab(tabLayout.getTabAt(position));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        totalAmtView.setText(Float.toString(GroupManager.getFeeSumByGroup(group)));
+        super.onResume();
     }
 }

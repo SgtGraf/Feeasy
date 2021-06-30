@@ -6,6 +6,7 @@ public class Fee {
     public GroupMember groupMember;
     public float amount;
     public String date;
+    public FeeStatus status;
 
     public Fee(String name, Group group, GroupMember groupMember, float amount, String date) {
         this.name = name;
@@ -13,6 +14,7 @@ public class Fee {
         this.groupMember = groupMember;
         this.amount = amount;
         this.date = date;
+        this.status = FeeStatus.ACCEPTED; // TODO: remove later
     }
 
 }

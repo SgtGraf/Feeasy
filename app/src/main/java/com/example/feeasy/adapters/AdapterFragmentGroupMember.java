@@ -6,9 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.feeasy.fragments.FeesFragment;
-import com.example.feeasy.fragments.MembersFragment;
 import com.example.feeasy.fragments.UserFeesFragment;
+import com.example.feeasy.fragments.UserHistoryFragment;
 
 public class AdapterFragmentGroupMember extends FragmentStateAdapter {
     public AdapterFragmentGroupMember(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
@@ -20,7 +19,7 @@ public class AdapterFragmentGroupMember extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
         if (position == 1) {
-            return new FeesFragment();
+            return new UserHistoryFragment();
         }
         return new UserFeesFragment();
     }

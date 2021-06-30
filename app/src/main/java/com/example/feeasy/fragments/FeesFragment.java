@@ -20,7 +20,7 @@ import com.example.feeasy.entities.Group;
 
 public class FeesFragment extends Fragment {
     RecyclerView recyclerView;
-
+    private AdapterFees adapter;
     private ItemViewModel itemViewModel;
     int groupId;
     Group group;
@@ -37,12 +37,21 @@ public class FeesFragment extends Fragment {
                 groupId = Integer.parseInt(charSequence.toString());
                 group =  GroupManager.getGroupByID(groupId);
                 assert GroupManager.getGroupByID(groupId) != null;
-                AdapterFees adapter = new AdapterFees(getContext(), GroupManager.getGroupByID(groupId).fees, group);
+                adapter = new AdapterFees(getContext(), GroupManager.getGroupByID(groupId).fees, group);
                 recyclerView = v.findViewById(R.id.feeRecycler);
                 recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                layoutManager.setReverseLayout(true);
+                layoutManager.setStackFromEnd(true);
+                recyclerView.setLayoutManager(layoutManager);
             }
         });
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }

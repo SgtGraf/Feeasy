@@ -1,5 +1,6 @@
 package com.example.feeasy.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,14 +9,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.feeasy.R;
+import com.example.feeasy.activities.AddFeeActivity;
 import com.example.feeasy.adapters.AdapterUserFees;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
@@ -54,6 +55,16 @@ public class UserFeesFragment extends Fragment {
             }
         });
 
+        ImageButton addFeeButton = v.findViewById(R.id.add_fee_button);
+        addFeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddFeeActivity.class);
+                intent.putExtra("groupId",itemViewModel.getGroup().getValue().id);
+                intent.putExtra("memberId",itemViewModel.getMember().getValue().id);
+                startActivity(intent);
+            }
+        });
 
 
         /*itemViewModel.getGroupId().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
