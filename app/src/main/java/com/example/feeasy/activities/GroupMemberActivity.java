@@ -29,7 +29,6 @@ public class GroupMemberActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_member);
-        getSupportActionBar().hide();
         tabLayout = findViewById(R.id.tab_layout_groupmember_activity);
         viewPager = findViewById(R.id.view_pager_groupmember_activity);
         membername = findViewById(R.id.activity_groupmember_name);
