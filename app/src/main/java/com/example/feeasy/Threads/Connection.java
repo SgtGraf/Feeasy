@@ -6,6 +6,8 @@ import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 
+import org.json.JSONObject;
+
 public class Connection {
 
     // Sign Up
@@ -31,30 +33,9 @@ public class Connection {
          thread.start();
     }
 
-    public void handleAction(ActionNames action){
-        ActionThreads thread = new ActionThreads(action);
+    public void handleAction(ActionNames action, JSONObject jsonObject){
+        ActionThreads thread = new ActionThreads(action, jsonObject);
         new Thread(thread).start();
-    }
-
-    public void threadCreateFeeValues(String name, Group group, GroupMember member, float amount){
-        this.feeName = name;
-        this.group = group;
-        this.member = member;
-        this.amount = amount;
-    }
-
-    public void threadSignUpValues(String username, String email, String password){
-        this.userName = username;
-        this.userEmail = email;
-        this.password = password;
-    }
-
-    public void threadCreateGroupValues(String name) {
-        this.groupName = name;
-    }
-
-    public void threadAddUserToGroupValues(String userAdded){
-        this.userAdded = userAdded;
     }
 
     class ServerThread extends Thread {
@@ -76,31 +57,31 @@ public class Connection {
 
     class ActionThreads implements Runnable{
         ActionNames action;
-        public ActionThreads(ActionNames newAction){
+        JSONObject jsonObject = new JSONObject();
+        public ActionThreads(ActionNames newAction, JSONObject jsonObject){
             action = newAction;
+            this.jsonObject = jsonObject;
         }
 
         @Override
         public void run() {
             switch (action){
                 case SIGN_UP:
-                    Log.i("Thread", userName + " - " + userEmail + " - " + password);
+                    Log.i("JSON", jsonObject.toString());
                     break;
 
                 case CREATE_FEE:
-                    Log.i("Thread", "creating fee..");
-                    Log.i("Thread", feeName + " - " + group.groupName + " - " + member.name + " - " + amount);
-                    Log.i("Thread", "done");
+                    Log.i("JSON", jsonObject.toString());
                     break;
 
                 case SAVE_PRESET:
-                    Log.i("Thread", "Preset saved");
+                    Log.i("JSON", jsonObject.toString());
                     break;
                 case CREATE_GROUP:
-                    Log.i("Thread", groupName + " created");
+                    Log.i("JSON", jsonObject.toString());
                     break;
                 case ADD_TO_GROUP:
-                    Log.i("Thread", userAdded + " added");
+                    Log.i("JSON", jsonObject.toString());
 
                 case SET_FEE_STATUS:
 

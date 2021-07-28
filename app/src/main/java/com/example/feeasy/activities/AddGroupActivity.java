@@ -14,6 +14,9 @@ import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class AddGroupActivity extends AppCompatActivity {
 
     EditText input;
@@ -37,9 +40,16 @@ public class AddGroupActivity extends AppCompatActivity {
                 name = input.getText().toString().trim();
                 if(!name.isEmpty()){
                     // TODO: thread
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject
+                                .put("name", name);
 
-                    connection.threadCreateGroupValues(name);
-                    connection.handleAction(ActionNames.CREATE_GROUP);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    connection.handleAction(ActionNames.CREATE_GROUP, jsonObject);
 
                     Group group = GroupManager.createGroup(name);
                     GroupManager.addGroupMember(GroupManager.getLoggedIn(), group);

@@ -14,6 +14,9 @@ import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class SignUpActivity extends AppCompatActivity {
 
     @Override
@@ -31,14 +34,24 @@ public class SignUpActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = name.getText().toString();
+                String displayName = name.getText().toString();
                 String mail = email.getText().toString();
                 String pw = password.getText().toString();
-                user.setName(username);
+                user.setName(displayName);
                 user.setMail(mail);
 
-                connection.threadSignUpValues(username, mail, pw);
-                connection.handleAction(ActionNames.SIGN_UP);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject
+                        .put("email", mail)
+                        .put("password", pw)
+                        .put("displayname", displayName);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                connection.handleAction(ActionNames.SIGN_UP, jsonObject);
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);

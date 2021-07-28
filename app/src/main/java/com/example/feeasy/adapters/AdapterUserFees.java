@@ -14,12 +14,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.feeasy.R;
+import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.activities.GroupActivity;
 import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Fee;
 import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -67,7 +72,23 @@ public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHo
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject
+                            .put("name", preset.name)
+                            .put("group_id", group.id)
+                            .put("user_id", groupMember.id)
+                            .put("amount", preset.amount);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Connection connection = new Connection();
+                connection.handleAction(ActionNames.CREATE_FEE, jsonObject);
+
                 GroupManager.createFee(preset.name, group, groupMember, preset.amount, "00.00.0000");
+
                 Toast.makeText(context, "Added \"" + preset.name + "\" to " + groupMember.name, Toast.LENGTH_SHORT).show();
             }
         });

@@ -17,6 +17,9 @@ import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class AddFeeActivity extends AppCompatActivity {
 
     Group group;
@@ -55,11 +58,24 @@ public class AddFeeActivity extends AppCompatActivity {
 
                         // Pass to Thread
                         Connection connection = new Connection();
-                        connection.threadCreateFeeValues(name, group,member, amount);
-                        connection.handleAction(ActionNames.CREATE_FEE);
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject
+                                    .put("name", name)
+                                    .put("group_id", group.id)
+                                    .put("user_id", member.id)
+                                    .put("amount", amount);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        connection.handleAction(ActionNames.CREATE_FEE, jsonObject);
 
                         if(saveAsPreset.isChecked()){
                             // TODO: thread
+                            connection.handleAction(ActionNames.SAVE_PRESET, jsonObject);
                             GroupManager.createFeePreset(name,group,amount);
                         }
                         onBackPressed();

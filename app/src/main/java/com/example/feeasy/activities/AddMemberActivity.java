@@ -10,9 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.feeasy.R;
+import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AddMemberActivity extends AppCompatActivity {
 
@@ -38,11 +43,24 @@ public class AddMemberActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 newMemberName = input.getText().toString();
+
                 // TODO: thread
+                Connection connection = new Connection();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject
+                            .put("id", groupId)
+                            .put("email", newMemberName);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                connection.handleAction(ActionNames.ADD_TO_GROUP, jsonObject);
+
                 GroupMember newMember = GroupManager.getMemberByName(newMemberName);
                 if(newMember != null){
                     if(!group.members.contains(newMember)){
-                        // TODO: thread
+
                         GroupManager.addGroupMember(newMember, group);
                         onBackPressed();
                     }
