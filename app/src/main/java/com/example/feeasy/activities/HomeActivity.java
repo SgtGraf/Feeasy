@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,15 +19,21 @@ import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterHome;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
+import com.example.feeasy.services.ServerService;
+import com.example.feeasy.services.ServerThread;
 
 public class HomeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     AdapterHome adapter;
+    Thread serverThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        this.serverThread = new Thread(new ServerThread());
+        this.serverThread.start();
+        //createService();
         View buttonAddGroup = findViewById(R.id.button_addGroup);
 
         buttonAddGroup.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +90,6 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent;
@@ -108,5 +114,11 @@ public class HomeActivity extends AppCompatActivity {
     public void onResume() {
         adapter.notifyDataSetChanged();
         super.onResume();
+    }
+
+    public void createService(){
+        Intent startServer = new Intent(this, ServerService.class);
+        startServer.setAction(ServerService.START_SERVER);
+        startService(startServer);
     }
 }

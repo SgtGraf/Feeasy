@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.feeasy.R;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.User;
+import com.example.feeasy.services.ServerService;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
                 user.setMail(email.getText().toString());
 
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+
                 startActivity(intent);
             }
         });
