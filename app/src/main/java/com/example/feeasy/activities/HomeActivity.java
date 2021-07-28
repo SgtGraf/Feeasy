@@ -11,20 +11,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterHome;
-import com.example.feeasy.entities.Fee;
-import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
@@ -97,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.item1:
                 Toast.makeText(this, "ACCOUNT", Toast.LENGTH_SHORT).show();
-                intent = new Intent(this, Profile.class);
+                intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.item2:
