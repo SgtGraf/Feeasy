@@ -64,9 +64,11 @@ public class Connection {
                     break;
                 case ADD_TO_GROUP:
                     Log.i("JSON", jsonObject.toString());
+                    break;
 
                 case SET_FEE_STATUS:
-
+                    Log.i("JSON", jsonObject.toString());
+                    break;
 
             }
         }

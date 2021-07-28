@@ -15,11 +15,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.feeasy.Threads.Connection;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Fee;
 import com.example.feeasy.entities.FeeStatus;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 import com.example.feeasy.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -83,14 +88,36 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
             Intent intent;
             @Override
             public void onClick(View view) {
+                Connection connection = new Connection();
+                JSONObject jsonObject = new JSONObject();
+
                 if(fees.get(position).status == FeeStatus.ACCEPTED){
                     fees.get(position).status = FeeStatus.COMPLETED;
+                    try {
+                        jsonObject
+                                .put("id", fees.get(position).id)
+                                .put("status", fees.get(position).status);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    connection.handleAction(ActionNames.SET_FEE_STATUS, jsonObject);
                     notifyItemChanged(position);
                 }
                 else if(fees.get(position).status == FeeStatus.COMPLETED){
                     fees.get(position).status = FeeStatus.ACCEPTED;
+                    try {
+                        jsonObject
+                                .put("id", fees.get(position).id)
+                                .put("status", fees.get(position).status);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    connection.handleAction(ActionNames.SET_FEE_STATUS, jsonObject);
                     notifyItemChanged(position);
                 }
+
             }
         });
     }
