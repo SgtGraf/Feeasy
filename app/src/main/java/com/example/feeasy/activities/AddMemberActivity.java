@@ -38,9 +38,11 @@ public class AddMemberActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 newMemberName = input.getText().toString();
+                // TODO: thread
                 GroupMember newMember = GroupManager.getMemberByName(newMemberName);
                 if(newMember != null){
                     if(!group.members.contains(newMember)){
+                        // TODO: thread
                         GroupManager.addGroupMember(newMember, group);
                         onBackPressed();
                     }

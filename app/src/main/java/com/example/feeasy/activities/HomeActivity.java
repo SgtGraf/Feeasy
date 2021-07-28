@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterHome;
@@ -26,6 +27,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Connection connection = new Connection();
+        connection.startServerThread();
 
         View buttonAddGroup = findViewById(R.id.button_addGroup);
 

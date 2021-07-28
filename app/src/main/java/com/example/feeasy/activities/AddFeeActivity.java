@@ -11,7 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.feeasy.R;
+import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 
@@ -39,6 +41,7 @@ public class AddFeeActivity extends AppCompatActivity {
         feeName = findViewById(R.id.add_fee_name);
         feeAmount = findViewById(R.id.add_fee_amount);
         Button addButton = findViewById(R.id.add_fee_button_confirm);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,8 +50,16 @@ public class AddFeeActivity extends AppCompatActivity {
                 if(name.length() > 0 && name.length() <= 100 && !amountValue.isEmpty()){
                     float amount = Float.parseFloat(amountValue);
                     if(amount > 0){
+                        // TODO: thread
                         GroupManager.createFee(name,group,member,amount,"00.00.0000");
+
+                        // Pass to Thread
+                        Connection connection = new Connection();
+                        connection.threadCreateFeeValues(name, group,member, amount);
+                        connection.handleAction(ActionNames.CREATE_FEE);
+
                         if(saveAsPreset.isChecked()){
+                            // TODO: thread
                             GroupManager.createFeePreset(name,group,amount);
                         }
                         onBackPressed();

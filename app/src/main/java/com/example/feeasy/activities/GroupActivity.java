@@ -47,7 +47,8 @@ public class GroupActivity extends AppCompatActivity {
         // Get group id from intent
         Intent intent = getIntent();
         int id = intent.getIntExtra("groupId", -1);
-        group =  GroupManager.getGroupByID(id);
+        // TODO: thread
+        group = GroupManager.getGroupByID(id);
 
         // Set id values for fragments
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
