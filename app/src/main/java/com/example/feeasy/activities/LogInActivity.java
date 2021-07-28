@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.feeasy.R;
 
-public class Profile extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_log_in);
     }
 }
