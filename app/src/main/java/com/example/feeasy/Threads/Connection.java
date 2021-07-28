@@ -10,24 +10,6 @@ import org.json.JSONObject;
 
 public class Connection {
 
-    // Sign Up
-    String userName;
-    String userEmail;
-    String password;
-
-    // new Fee
-    String feeName;
-    Group group;
-    GroupMember member;
-    float amount;
-
-    // new group
-    String groupName;
-
-    // add user to group
-    String userAdded;
-
-
     public void startServerThread(){
         ServerThread thread = new ServerThread();
          thread.start();
