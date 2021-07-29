@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.feeasy.entities.ActionNames;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,6 +28,9 @@ public class Connection {
         new Thread(thread).start();
     }
 
+    public void signUp(JSONObject jsonObject){
+
+    }
 
     class ActionThreads implements Runnable{
         ActionNames action;
@@ -41,11 +45,13 @@ public class Connection {
         public void run() {
 
             String msg = jsonObject.toString();
+            JSONObject response = null;
             try {
                 switch (action) {
                     case SIGN_UP:
                         Log.i("JSON", jsonObject.toString());
-                        request("register", "POST", msg);
+                        response = request("register", "POST", msg);
+
                         break;
 
                     case CREATE_FEE:
@@ -77,13 +83,16 @@ public class Connection {
                         request("login", "POST", msg);
                 }
 
-            }catch (IOException e) {
+            }catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
+            Log.i("JSONRESPONSE", response.toString());
         }
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        public void request(String route, String type, String json) throws IOException {
+        public JSONObject request(String route, String type, String json) throws IOException, JSONException {
+            String responseString;
+
             URL url = new URL(URLstring + route + "/");
             Log.i("URL: ", url.toString());
             Log.i("Type: ", type);
@@ -108,7 +117,9 @@ public class Connection {
                     response.append(responseLine.trim());
                 }
                 Log.i("RESPONSE", response.toString());
+                responseString = response.toString();
             }
+            return new JSONObject(responseString);
         }
     }
 
