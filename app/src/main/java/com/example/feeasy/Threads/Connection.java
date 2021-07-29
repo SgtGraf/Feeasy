@@ -5,7 +5,9 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.feeasy.dataManagement.CurrentUser;
 import com.example.feeasy.entities.ActionNames;
+import com.example.feeasy.entities.LoggedInUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +23,7 @@ import java.net.URL;
 public class Connection {
 
     String URLstring = "https://feeazy-server.herokuapp.com/";
+    int statusCode = -1;
 
 
     public void handleAction(ActionNames action, JSONObject jsonObject){
@@ -28,8 +31,17 @@ public class Connection {
         new Thread(thread).start();
     }
 
-    public void signUp(JSONObject jsonObject){
+    public void signUp(JSONObject jsonObject) throws JSONException {
+        CurrentUser.setLoggedInUser(null);
+        CurrentUser.setLoggedInUser(new LoggedInUser(jsonObject.getInt("id"), jsonObject.getString("name"), jsonObject.getString("token")));
+    }
 
+    public void signIn(JSONObject jsonObject) throws JSONException {
+        CurrentUser.setLoggedInUser(null);
+        Log.i("JSON", jsonObject.getString("token"));
+        if(!jsonObject.getString("token").isEmpty()){
+            CurrentUser.setLoggedInUser(new LoggedInUser(jsonObject.getInt("id"), "NAME", jsonObject.getString("token")));
+        }
     }
 
     class ActionThreads implements Runnable{
@@ -51,7 +63,13 @@ public class Connection {
                     case SIGN_UP:
                         Log.i("JSON", jsonObject.toString());
                         response = request("register", "POST", msg);
+                        signUp(response);
+                        break;
 
+                    case SIGN_IN:
+                        Log.i("JSON", jsonObject.toString());
+                        response = request("login", "POST", msg);
+                        signIn(response);
                         break;
 
                     case CREATE_FEE:
@@ -77,16 +95,13 @@ public class Connection {
                         Log.i("JSON", jsonObject.toString());
                         request("fee", "PUT", msg);
                         break;
-
-                    case SIGN_IN:
-                        Log.i("JSON", jsonObject.toString());
-                        request("login", "POST", msg);
                 }
 
             }catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            Log.i("JSONRESPONSE", response.toString());
+
+            //Log.i("JSONRESPONSE", response.toString());
         }
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -101,16 +116,18 @@ public class Connection {
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
             connection.setDoOutput(true);
+            //int code = connection.getResponseCode();
+            //Log.i("ResponseCode1",  Integer.toString(connection.getResponseCode()));
+
 
             try(OutputStream os = connection.getOutputStream()) {
                 byte[] input = json.getBytes();
                 os.write(input, 0, input.length);
                 os.flush();
             }
+            //Log.i("ResponseCode2",  Integer.toString(connection.getResponseCode()));
 
-
-            try(BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine;
                 while ((responseLine = br.readLine()) != null) {
@@ -119,6 +136,8 @@ public class Connection {
                 Log.i("RESPONSE", response.toString());
                 responseString = response.toString();
             }
+            //Log.i("ResponseCode3",  Integer.toString(connection.getResponseCode()));
+            //statusCode = connection.getResponseCode();
             return new JSONObject(responseString);
         }
     }
