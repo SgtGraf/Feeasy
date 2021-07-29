@@ -69,13 +69,10 @@ public class Connection {
                 case SET_FEE_STATUS:
                     Log.i("JSON", jsonObject.toString());
                     break;
-
+                case SIGN_IN:
+                    Log.i("JSON", jsonObject.toString());
             }
         }
     }
-    public void thread(){
-
-    }
-
 
 }
