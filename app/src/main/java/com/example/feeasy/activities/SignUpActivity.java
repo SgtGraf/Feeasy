@@ -45,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
                     jsonObject
                         .put("email", mail)
                         .put("password", pw)
-                        .put("displayname", displayName);
+                        .put("name", displayName);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

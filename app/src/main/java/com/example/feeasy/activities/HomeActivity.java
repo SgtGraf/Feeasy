@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         Connection connection = new Connection();
-        connection.startServerThread();
+        //connection.startServerThread();
 
         View buttonAddGroup = findViewById(R.id.button_addGroup);
 
