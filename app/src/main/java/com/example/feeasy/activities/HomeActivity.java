@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.feeasy.Threads.Connection;
+import com.example.feeasy.dataManagement.CurrentUser;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterHome;
@@ -26,6 +29,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Connection connection = new Connection();
+        //connection.startServerThread();
 
         View buttonAddGroup = findViewById(R.id.button_addGroup);
 
@@ -42,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         * Just for testing
         *
          */
+        Log.i("CURRENT USER: ", CurrentUser.getLoggedInUser().name);
 
         Group g1 = GroupManager.createGroup("Nice");
         Group g2 = GroupManager.createGroup("Not nice");

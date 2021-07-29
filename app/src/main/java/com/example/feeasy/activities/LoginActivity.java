@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,60 +16,62 @@ import com.example.feeasy.R;
 import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.Threads.ServerHandler;
 import com.example.feeasy.dataManagement.CurrentUser;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.LoggedInUser;
-import com.example.feeasy.entities.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SignUpActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     ServerHandler serverHandler = new ServerHandler();
+    Button button;
+    ProgressBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        final TextView name = findViewById(R.id.signup_display_name);
-        final TextView  email = findViewById(R.id.signup_email);
-        final TextView password = findViewById(R.id.signup_password);
-        TextView switcher = findViewById(R.id.sign_up_switch);
-        Button btn = findViewById(R.id.signup_button);
-        serverHandler.start();
+        setContentView(R.layout.activity_login);
 
+        final TextView emailInput = findViewById(R.id.login_email);
+        final TextView passwordInput = findViewById(R.id.login_password);
         final Connection connection = new Connection();
+        TextView switcher = findViewById(R.id.login_button_sign_up);
+        button = findViewById(R.id.login_button);
+        bar = findViewById(R.id.login_loading);
 
-        final User user = new User("", "");
+        serverHandler.start();
 
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
             }
         });
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String displayName = name.getText().toString();
-                String mail = email.getText().toString();
-                String pw = password.getText().toString();
-                user.setName(displayName);
-                user.setMail(mail);
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+                bar.setVisibility(View.VISIBLE);
 
-                JSONObject jsonObject = formJson(mail, pw, displayName);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject
+                            .put("email", email)
+                            .put("password", password);
 
-                connection.handleAction(ActionNames.SIGN_UP, jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                connection.handleAction(ActionNames.SIGN_IN, jsonObject);
                 waitForServer();
             }
-
-
         });
     }
-
 
     public void waitForServer(){
 
@@ -85,26 +87,15 @@ public class SignUpActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                     serverHandler.looper.quit();
+                    bar.setVisibility(View.INVISIBLE);
                 }
                 else{
-                   Toast toast = Toast.makeText(getApplicationContext(), "Registration not possible", Toast.LENGTH_SHORT);
-                   toast.show();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Wrong email or password", Toast.LENGTH_SHORT);
+                    toast.show();
+                    bar.setVisibility(View.INVISIBLE);
                 }
             }
         });
-    }
 
-    public JSONObject formJson(String email, String pw, String name){
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject
-                    .put("email", email)
-                    .put("password", pw)
-                    .put("name", name);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
     }
 }

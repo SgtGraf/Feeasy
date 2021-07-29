@@ -15,6 +15,7 @@ public class GroupManager {
 
     static int nextGroupId = 0;
     static int nextmemberId = 0;
+    static int nextFeeId = 0;
 
     public static GroupMember getLoggedIn() {
         return loggedIn;
@@ -110,7 +111,7 @@ public class GroupManager {
     }
 
     public static Fee createFee(String name, Group group, GroupMember member, float amount, String date){
-        Fee fee = new Fee(name, group, member, amount,date);
+        Fee fee = new Fee(nextFeeId++, name, group, member, amount,date);
         group.fees.add(fee);
         return fee;
     }

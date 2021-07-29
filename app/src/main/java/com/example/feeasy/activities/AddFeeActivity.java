@@ -11,9 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.feeasy.R;
+import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AddFeeActivity extends AppCompatActivity {
 
@@ -39,6 +44,7 @@ public class AddFeeActivity extends AppCompatActivity {
         feeName = findViewById(R.id.add_fee_name);
         feeAmount = findViewById(R.id.add_fee_amount);
         Button addButton = findViewById(R.id.add_fee_button_confirm);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,8 +53,29 @@ public class AddFeeActivity extends AppCompatActivity {
                 if(name.length() > 0 && name.length() <= 100 && !amountValue.isEmpty()){
                     float amount = Float.parseFloat(amountValue);
                     if(amount > 0){
+                        // TODO: thread
                         GroupManager.createFee(name,group,member,amount,"00.00.0000");
+
+                        // Pass to Thread
+                        Connection connection = new Connection();
+
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject
+                                    .put("name", name)
+                                    .put("group_id", group.id)
+                                    .put("user_id", member.id)
+                                    .put("amount", amount);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        connection.handleAction(ActionNames.CREATE_FEE, jsonObject);
+
                         if(saveAsPreset.isChecked()){
+                            // TODO: thread
+                            connection.handleAction(ActionNames.SAVE_PRESET, jsonObject);
                             GroupManager.createFeePreset(name,group,amount);
                         }
                         onBackPressed();

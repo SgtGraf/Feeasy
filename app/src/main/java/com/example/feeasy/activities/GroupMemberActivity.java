@@ -37,6 +37,7 @@ public class GroupMemberActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int groupId = intent.getIntExtra("groupId", -1);
         int memberId = intent.getIntExtra("memberId", -1);
+        // TODO: thread
         Group group = GroupManager.getGroupByID(groupId);
         GroupMember member = GroupManager.getMemberFromGroupById(group, memberId);
 
