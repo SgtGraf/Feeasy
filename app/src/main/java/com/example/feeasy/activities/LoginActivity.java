@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 bar.setVisibility(View.VISIBLE);
+                //button.setEnabled(false); TODO: fix
 
                 JSONObject jsonObject = new JSONObject();
                 try {
