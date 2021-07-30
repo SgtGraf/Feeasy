@@ -101,7 +101,6 @@ public class Connection {
                 e.printStackTrace();
             }
 
-            //Log.i("JSONRESPONSE", response.toString());
         }
 
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -115,9 +114,10 @@ public class Connection {
             connection.setRequestMethod(type);
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
+            if (action != ActionNames.SIGN_UP && action!= ActionNames.SIGN_IN){
+                connection.setRequestProperty("Authorization", CurrentUser.getLoggedInUser().token);
+            }
             connection.setDoOutput(true);
-            //int code = connection.getResponseCode();
-            //Log.i("ResponseCode1",  Integer.toString(connection.getResponseCode()));
 
 
             try(OutputStream os = connection.getOutputStream()) {
@@ -126,7 +126,8 @@ public class Connection {
                 os.flush();
             }
             //Log.i("ResponseCode2",  Integer.toString(connection.getResponseCode()));
-
+            Log.i("ResponseMsg:", connection.getResponseMessage());
+            Log.i("ResponseCode:", Integer.toString(connection.getResponseCode()));
             try(BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine;
@@ -136,8 +137,6 @@ public class Connection {
                 Log.i("RESPONSE", response.toString());
                 responseString = response.toString();
             }
-            //Log.i("ResponseCode3",  Integer.toString(connection.getResponseCode()));
-            //statusCode = connection.getResponseCode();
             return new JSONObject(responseString);
         }
     }
