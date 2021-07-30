@@ -18,12 +18,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Connection {
 
     String URLstring = "https://feeazy-server.herokuapp.com/";
     int statusCode = -1;
+    JSONObject responseObject;
 
 
     public void handleAction(ActionNames action, JSONObject jsonObject){
@@ -61,49 +63,112 @@ public class Connection {
             try {
                 switch (action) {
                     case SIGN_UP:
-                        Log.i("JSON", jsonObject.toString());
-                        response = request("register", "POST", msg);
-                        signUp(response);
+                        if(isValidResponse(doRequest("register", "POST", msg))){
+                            signUp(responseObject);
+                        }
                         break;
 
                     case SIGN_IN:
-                        Log.i("JSON", jsonObject.toString());
-                        response = request("login", "POST", msg);
-                        signIn(response);
+                        if(isValidResponse(doRequest("login", "POST", msg))){
+                            signIn(responseObject);
+                        }
                         break;
 
                     case CREATE_FEE:
-                        Log.i("JSON", jsonObject.toString());
-                        request("fee", "POST", msg);
+                        if(isValidResponse(doRequest("fee", "POST", msg))){
+
+                        }
                         break;
 
                     case SAVE_PRESET:
-                        Log.i("JSON", jsonObject.toString());
-                        request("preset", "POST", msg);
+                        if(isValidResponse(doRequest("preset", "POST", msg))){
+
+                        }
                         break;
 
                     case CREATE_GROUP:
-                        Log.i("JSON", jsonObject.toString());
-                        request("group", "POST", msg);
+                        if(isValidResponse(doRequest("group", "POST", msg))){
+
+                        }
                         break;
                     case ADD_TO_GROUP:
-                        Log.i("JSON", jsonObject.toString());
-                        request("group", "PUT", msg);
+                        if(isValidResponse(doRequest("group", "PUT", msg))){
+
+                        }
                         break;
 
                     case SET_FEE_STATUS:
-                        Log.i("JSON", jsonObject.toString());
-                        request("fee", "PUT", msg);
+                        if(isValidResponse(doRequest("fee", "PUT", msg))){
+
+                        }
                         break;
+
+                    case ALL_GROUPS:
+                        if(isValidResponse(doRequest("group", "GET", msg))){
+
+                        }
+                        break;
+
+                    case ALL_MEMBERS:
+                        if(isValidResponse(doRequest("user", "GET", msg))){
+
+                        }
+                        break;
+
+                    case ALL_FEES_OF_GROUP:
+                        if(isValidResponse(doRequest("fee", "GET", msg))){
+                            signIn(responseObject);
+                        }
+                        break;
+
+                    default:
+                        Log.wtf("error:", "How did you get here?");
                 }
 
             }catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-
-            //Log.i("JSONRESPONSE", response.toString());
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        public int doRequest(String route, String type, String json) throws IOException, JSONException {
+
+            URL url = new URL(URLstring + route + "/");
+            Log.i("URL: ", url.toString());
+            Log.i("Type: ", type);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(type);
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setRequestProperty("Accept", "application/json");
+            if (action != ActionNames.SIGN_UP && action!= ActionNames.SIGN_IN){
+                connection.setRequestProperty("Authorization", CurrentUser.getLoggedInUser().token);
+            }
+            connection.setDoOutput(true);
+
+
+            try(OutputStream os = connection.getOutputStream()) {
+                byte[] input = json.getBytes();
+                os.write(input, 0, input.length);
+                os.flush();
+            }
+
+            int responseCode = connection.getResponseCode();
+            String responseString;
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                Log.i("RESPONSE", response.toString());
+                responseString = response.toString();
+            }
+            responseObject = new JSONObject(responseString);
+
+            return responseCode;
+        }
+
+        // outdated
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         public JSONObject request(String route, String type, String json) throws IOException, JSONException {
             String responseString;
@@ -115,9 +180,10 @@ public class Connection {
             connection.setRequestMethod(type);
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
+            if (action != ActionNames.SIGN_UP && action!= ActionNames.SIGN_IN){
+                connection.setRequestProperty("Authorization", CurrentUser.getLoggedInUser().token);
+            }
             connection.setDoOutput(true);
-            //int code = connection.getResponseCode();
-            //Log.i("ResponseCode1",  Integer.toString(connection.getResponseCode()));
 
 
             try(OutputStream os = connection.getOutputStream()) {
@@ -125,7 +191,10 @@ public class Connection {
                 os.write(input, 0, input.length);
                 os.flush();
             }
-            //Log.i("ResponseCode2",  Integer.toString(connection.getResponseCode()));
+
+            Log.i("ResponseMsg:", connection.getResponseMessage());
+            Log.i("ResponseCode:", Integer.toString(connection.getResponseCode()));
+
 
             try(BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
                 StringBuilder response = new StringBuilder();
@@ -136,10 +205,12 @@ public class Connection {
                 Log.i("RESPONSE", response.toString());
                 responseString = response.toString();
             }
-            //Log.i("ResponseCode3",  Integer.toString(connection.getResponseCode()));
-            //statusCode = connection.getResponseCode();
             return new JSONObject(responseString);
         }
+    }
+
+    public boolean isValidResponse(int responseCode){
+        return responseCode >= 200 && responseCode <= 299;
     }
 
 }

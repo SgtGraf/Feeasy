@@ -3,7 +3,7 @@ package com.example.feeasy.entities;
 public class LoggedInUser {
     public int id;
     public String name;
-    String token;
+    public String token = "";
 
     public LoggedInUser(int id, String name, String token) {
         this.id = id;
