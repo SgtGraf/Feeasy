@@ -30,7 +30,6 @@ public class ProfileActivity extends AppCompatActivity {
         dataManager = DataManager.getDataManager();
         Button btn = findViewById(R.id.profile_done);
         username = findViewById(R.id.profile_displayname_input);
-        email = findViewById(R.id.profile_mail);
         username.setText(dataManager.getLoggedInUser().name);
 
         btn.setOnClickListener(new View.OnClickListener() {
