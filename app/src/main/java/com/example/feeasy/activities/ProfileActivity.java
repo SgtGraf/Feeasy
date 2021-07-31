@@ -41,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("name", username.getText());
@@ -49,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 updateDisplayname(jsonObject);
+                onBackPressed();
             }
         });
     }
