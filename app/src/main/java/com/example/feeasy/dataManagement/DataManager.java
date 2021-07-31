@@ -94,4 +94,9 @@ public class DataManager {
             group.fees.addAll(fees);
         }
     }
+
+    public void signOut(){
+        loggedInUser = null;
+        groupList = new Vector<Group>();
+    }
 }
