@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.dataManagement.AppDataManager;
 import com.example.feeasy.dataManagement.DataManager;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterHome;
 import com.example.feeasy.entities.ActionNames;
@@ -50,40 +49,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        /*
-        *
-        * Just for testing
-        *
-         */
-        Log.i("CURRENT USER: ", DataManager.getDataManager().getLoggedInUser().name);
-
-        Group g1 = GroupManager.createGroup("Nice");
-        Group g2 = GroupManager.createGroup("Not nice");
-
-        GroupMember gm1 = GroupManager.createMember("Roman");
-        GroupMember gm2 =  GroupManager.createMember("Fabi");
-        GroupMember gm3 =  GroupManager.createMember("Leon");
-
-        GroupManager.addGroupMember(gm1, g1);
-        GroupManager.addGroupMember(gm2, g1);
-        GroupManager.addGroupMember(gm1, g2);
-        GroupManager.addGroupMember(gm3, g2);
-
-        GroupManager.createFee("Too late", g1, gm1, 50, "29.06.2021");
-        GroupManager.createFee("Missed Penalty", g1, gm1, 10, "29.06.2021");
-        GroupManager.createFee("Lost Bet", g1, gm2, 20, "28.06.2021");
-        GroupManager.createFee("Got rick rolled", g1, gm1, 800, "28.06.2021");
-        GroupManager.createFee("Too late", g2, gm3, 30, "27.06.2021");
-        GroupManager.createFee("Too late", g2, gm1, 69, "27.06.2021");
-
-        GroupManager.createFeePreset("Too late", g1, 25);
-        GroupManager.createFeePreset("Hit the ground to hard", g1, 50);
-
-        GroupManager.setLoggedIn(gm1);
-        /*
-        *
-         */
 
         adapter = new AdapterHome(this, DataManager.getDataManager().getGroupList());
         recyclerView = findViewById(R.id.main_recycler);

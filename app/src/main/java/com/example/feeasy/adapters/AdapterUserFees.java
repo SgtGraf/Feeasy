@@ -1,13 +1,10 @@
 package com.example.feeasy.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,10 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.feeasy.R;
 import com.example.feeasy.Threads.Connection;
-import com.example.feeasy.activities.GroupActivity;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.ActionNames;
-import com.example.feeasy.entities.Fee;
 import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
@@ -72,24 +66,8 @@ public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHo
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject
-                            .put("name", preset.name)
-                            .put("group_id", group.id)
-                            .put("user_id", groupMember.id)
-                            .put("amount", preset.amount);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 Connection connection = new Connection();
-                connection.handleAction(ActionNames.CREATE_FEE, jsonObject);
-
-                GroupManager.createFee(preset.name, group, groupMember, preset.amount, "00.00.0000");
-
-                Toast.makeText(context, "Added \"" + preset.name + "\" to " + groupMember.name, Toast.LENGTH_SHORT).show();
+                connection.handleAction(ActionNames.CREATE_FEE, buildJSONObject(preset.name,group.id, groupMember.id, preset.amount));
             }
         });
     }
@@ -97,6 +75,17 @@ public class AdapterUserFees extends RecyclerView.Adapter<AdapterUserFees.ViewHo
     @Override
     public int getItemCount() {
         return presets.size();
+    }
+
+    private JSONObject buildJSONObject(String name, int groupId, int userId, float amount){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name).put("group_id", groupId).put("user_id", userId).put("amount", amount);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
 }

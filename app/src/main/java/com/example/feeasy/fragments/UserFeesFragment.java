@@ -3,24 +3,36 @@ package com.example.feeasy.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.feeasy.R;
+import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.activities.AddFeeActivity;
+import com.example.feeasy.activities.GroupMemberActivity;
 import com.example.feeasy.adapters.AdapterUserFees;
+import com.example.feeasy.dataManagement.AppDataManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UserFeesFragment extends Fragment {
 
@@ -30,6 +42,8 @@ public class UserFeesFragment extends Fragment {
     Group group;
     GroupMember groupMember;
     AdapterUserFees adapter;
+
+    Handler handler = new UserPresetsHandler(Looper.getMainLooper());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,8 +62,9 @@ public class UserFeesFragment extends Fragment {
 
         itemViewModel.getGroup().observe(getViewLifecycleOwner(), new Observer<Group>() {
             @Override
-            public void onChanged(Group group) {
-                adapter = new AdapterUserFees(getContext(), group.presets, group, groupMember);
+            public void onChanged(Group grp) {
+                group = grp;
+                adapter = new AdapterUserFees(getContext(), grp.presets, grp, groupMember);
                 recyclerView = v.findViewById(R.id.recycler_group_member);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -61,32 +76,67 @@ public class UserFeesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AddFeeActivity.class);
-                intent.putExtra("groupId",itemViewModel.getGroup().getValue().id);
-                intent.putExtra("memberId",itemViewModel.getMember().getValue().id);
+                intent.putExtra("groupId",group.id);
+                intent.putExtra("memberId",groupMember.id);
                 startActivity(intent);
             }
         });
-
-
-        /*itemViewModel.getGroupId().observe(getViewLifecycleOwner(), new Observer<CharSequence>() {
-            @Override
-            public void onChanged(CharSequence charSequence) {
-                groupId = Integer.parseInt(charSequence.toString());
-                group =  GroupManager.getGroupByID(groupId);
-                assert GroupManager.getGroupByID(groupId) != null;
-                Log.i("Group ID FEE FRAGMENT", charSequence.toString());
-                AdapterUserFees adapter = new AdapterUserFees(getContext(), GroupManager.getGroupByID(groupId).presets, group);
-                recyclerView = v.findViewById(R.id.recycler_group_member);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
-        });*/
         return v;
     }
 
     @Override
     public void onResume() {
+        AppDataManager.getAppDataManager().setCurrentHandler(handler);
+        Connection connection = new Connection();
+        connection.handleAction(ActionNames.ALL_PRESETS_OF_GROUP,buildJSONObject(group.id));
         adapter.notifyDataSetChanged();
         super.onResume();
+    }
+
+    public JSONObject buildJSONObject(int groupId){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("group_id", groupId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    private class UserPresetsHandler extends Handler{
+
+        public UserPresetsHandler(Looper looper){
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if(msg.obj == ActionNames.ALL_PRESETS_OF_GROUP){
+                if(msg.arg1 == 0){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+            if(msg.obj == ActionNames.CREATE_FEE){
+                if(msg.arg1 == 0){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "Added fee to " + groupMember.name, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+            if(msg.obj == ActionNames.SAVE_PRESET){
+                if(msg.arg1 == 0){
+                    Connection connection = new Connection();
+                    connection.handleAction(ActionNames.ALL_PRESETS_OF_GROUP,buildJSONObject(group.id));
+                }
+            }
+        }
     }
 }

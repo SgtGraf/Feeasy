@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterFragmentGroupMember;
-import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.dataManagement.DataManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
@@ -25,6 +25,9 @@ public class GroupMemberActivity extends AppCompatActivity {
     private ItemViewModel viewModel;
     TextView membername;
 
+    Group group;
+    GroupMember member;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,17 +40,15 @@ public class GroupMemberActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int groupId = intent.getIntExtra("groupId", -1);
         int memberId = intent.getIntExtra("memberId", -1);
-        // TODO: thread
-        Group group = GroupManager.getGroupByID(groupId);
-        GroupMember member = GroupManager.getMemberFromGroupById(group, memberId);
 
+        group = DataManager.getDataManager().getGroup(groupId);
+        member = DataManager.getDataManager().getMemberOfGroup(groupId,memberId);
 
         // Pass group ID to Fragment
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
         viewModel.setGroupId(Integer.toString(groupId));
         viewModel.setGroup(group);
         viewModel.setMember(member);
-        //viewModel.setMemberId(group);
 
         tabManagement();
 
@@ -87,4 +88,5 @@ public class GroupMemberActivity extends AppCompatActivity {
             }
         });
     }
+
 }

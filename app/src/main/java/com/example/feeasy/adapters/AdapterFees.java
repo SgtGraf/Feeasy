@@ -76,7 +76,7 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final AdapterFees.ViewHolder holder, final int position) {
         holder.memberName.setText(fees.get(position).groupMember.name);
-        holder.memberFees.setText(fees.get(position).amount + "$");
+        holder.memberFees.setText(fees.get(position).amount + "€");
         holder.feeName.setText(fees.get(position).name);
         if(fees.get(position).status == FeeStatus.ACCEPTED){
             ImageViewCompat.setImageTintList(holder.status, ColorStateList.valueOf(ContextCompat.getColor(context,R.color.colorStatusRed)));
@@ -85,39 +85,17 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
             ImageViewCompat.setImageTintList(holder.status, ColorStateList.valueOf(ContextCompat.getColor(context,R.color.colorStatusGreen)));
         }
         holder.layout.setOnClickListener(new View.OnClickListener() {
-            Intent intent;
             @Override
             public void onClick(View view) {
                 Connection connection = new Connection();
-                JSONObject jsonObject = new JSONObject();
-
+                String status = "";
                 if(fees.get(position).status == FeeStatus.ACCEPTED){
-                    fees.get(position).status = FeeStatus.COMPLETED;
-                    try {
-                        jsonObject
-                                .put("id", fees.get(position).id)
-                                .put("status", fees.get(position).status);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    connection.handleAction(ActionNames.SET_FEE_STATUS, jsonObject);
-                    notifyItemChanged(position);
+                    status = FeeStatus.COMPLETED.toString();
                 }
                 else if(fees.get(position).status == FeeStatus.COMPLETED){
-                    fees.get(position).status = FeeStatus.ACCEPTED;
-                    try {
-                        jsonObject
-                                .put("id", fees.get(position).id)
-                                .put("status", fees.get(position).status);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    connection.handleAction(ActionNames.SET_FEE_STATUS, jsonObject);
-                    notifyItemChanged(position);
+                    status = FeeStatus.ACCEPTED.toString();
                 }
-
+                connection.handleAction(ActionNames.SET_FEE_STATUS, buildJSONObject(fees.get(position).id,status));
             }
         });
     }
@@ -125,5 +103,15 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
     @Override
     public int getItemCount() {
         return fees.size();
+    }
+
+    private JSONObject buildJSONObject(int id, String status){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id", id).put("status", status);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 }

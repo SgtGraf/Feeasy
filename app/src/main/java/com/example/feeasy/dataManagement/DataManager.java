@@ -1,10 +1,12 @@
 package com.example.feeasy.dataManagement;
 
 import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 import com.example.feeasy.entities.LoggedInUser;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -93,6 +95,46 @@ public class DataManager {
             group.fees.clear();
             group.fees.addAll(fees);
         }
+    }
+
+    public void loadPresets(int groupId, List<FeePreset> presets){
+        Group group = getGroup(groupId);
+        if(group != null){
+            group.presets.clear();
+            group.presets.addAll(presets);
+        }
+    }
+
+    public void addFeesToMember(int groupId, int userId, List<Fee> fees){
+        GroupMember member = getMemberOfGroup(groupId,userId);
+        if(member != null){
+            member.fees.clear();
+            member.fees.addAll(fees);
+        }
+    }
+
+    public String getCombinedFeeOfGroup(int groupId){
+        Group group = getGroup(groupId);
+        double sum = 0d;
+        if(group != null){
+            for (Fee fee:group.fees) {
+                sum += fee.amount;
+            }
+        }
+        return String.format("%.2f",sum) + "€";
+    }
+
+    public String getCombinedFeeOfUser(int groupId, int userId){
+        Group group = getGroup(groupId);
+        double sum = 0d;
+        if(group != null){
+            for (Fee fee: group.fees) {
+                if(fee.groupMember != null && fee.groupMember.id == userId){
+                    sum += fee.amount;
+                }
+            }
+        }
+        return String.format("%.2f",sum) + "€";
     }
 
     public void signOut(){
