@@ -69,7 +69,7 @@ public class ProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void logout() {
+    private void signOut() {
         dataManager.signOut();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         b.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logout();
+                signOut();
             }
         });
         b.setNegativeButton("CANCEL", null);
