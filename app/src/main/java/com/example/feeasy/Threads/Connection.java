@@ -295,10 +295,11 @@ public class Connection {
             notifyHandler(action,0);
         }
 
-        private void loadFeesOfUser(String response) throws JSONException{
+        private void loadFeesOfUser(String response) throws JSONException {
             JSONArray responseArray = new JSONArray(response);
-            DataManager.getDataManager().addFeesToMember(jsonObject.getInt("group_id"),jsonObject.getInt("user_id"),buildFeeListFromResponse(responseArray));
-            notifyHandler(action,0);
+            DataManager.getDataManager().addFeesToMember(jsonObject.getInt("group_id"), jsonObject.getInt("user_id"), buildFeeListFromResponse(responseArray));
+            notifyHandler(action, 0);
+        }
 
         public void updateUser(String displayname) throws JSONException{
 

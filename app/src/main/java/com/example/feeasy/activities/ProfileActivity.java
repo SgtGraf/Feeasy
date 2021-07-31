@@ -90,6 +90,5 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void updateDisplayname(JSONObject jsonObject){
         connection.handleAction(ActionNames.UPDATE_MEMBER, jsonObject);
-        username.setText(dataManager.getLoggedInUser().name);
     }
 }
