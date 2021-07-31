@@ -1,11 +1,13 @@
 package com.example.feeasy.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -14,19 +16,18 @@ import android.widget.Toast;
 
 import com.example.feeasy.R;
 import com.example.feeasy.Threads.Connection;
-import com.example.feeasy.Threads.ServerHandler;
-import com.example.feeasy.dataManagement.CurrentUser;
+import com.example.feeasy.dataManagement.AppDataManager;
 import com.example.feeasy.entities.ActionNames;
-import com.example.feeasy.entities.LoggedInUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
-    ServerHandler serverHandler = new ServerHandler();
     Button button;
     ProgressBar bar;
+
+    Handler loginHandler = new LoginHandler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,11 @@ public class LoginActivity extends AppCompatActivity {
 
         final TextView emailInput = findViewById(R.id.login_email);
         final TextView passwordInput = findViewById(R.id.login_password);
-        final Connection connection = new Connection();
         TextView switcher = findViewById(R.id.login_button_sign_up);
         button = findViewById(R.id.login_button);
         bar = findViewById(R.id.login_loading);
 
-        serverHandler.start();
+        final Connection connection = new Connection();
 
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,50 +53,65 @@ public class LoginActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button.setEnabled(false); // TODO: fix
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 bar.setVisibility(View.VISIBLE);
-                //button.setEnabled(false); TODO: fix
-
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject
-                            .put("email", email)
-                            .put("password", password);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                connection.handleAction(ActionNames.SIGN_IN, jsonObject);
-                waitForServer();
+                connection.handleAction(ActionNames.SIGN_IN, buildJSONObject(email,password));
             }
         });
     }
 
-    public void waitForServer(){
+    public JSONObject buildJSONObject(String email, String pw){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("email", email).put("password", pw);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 
-        // will wait flat amount of 1 sec
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppDataManager.getAppDataManager().setCurrentHandler(loginHandler);
+    }
 
-        serverHandler.handler.post(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(1000);
-                LoggedInUser logged = CurrentUser.getLoggedInUser();
-                if(logged!=null){
-                    Log.i("USER:", logged.name);
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(intent);
-                    serverHandler.looper.quit();
-                    bar.setVisibility(View.INVISIBLE);
+    @Override
+    public void onBackPressed() {
+    }
+
+    private class LoginHandler extends Handler{
+
+        public LoginHandler(Looper looper){
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if(msg.obj == ActionNames.SIGN_IN){
+                if(msg.arg1 == 0){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
                 else{
-                    Toast toast = Toast.makeText(getApplicationContext(), "Wrong email or password", Toast.LENGTH_SHORT);
-                    toast.show();
-                    bar.setVisibility(View.INVISIBLE);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bar.setVisibility(View.INVISIBLE);
+                            button.setEnabled(true);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Wrong email or password", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
                 }
             }
-        });
-
+        }
     }
 }

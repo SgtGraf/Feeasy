@@ -14,10 +14,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.feeasy.Threads.Connection;
+import com.example.feeasy.dataManagement.DataManager;
 import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterFragmentGroup;
+import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.google.android.material.tabs.TabLayout;
 
@@ -47,8 +50,7 @@ public class GroupActivity extends AppCompatActivity {
         // Get group id from intent
         Intent intent = getIntent();
         int id = intent.getIntExtra("groupId", -1);
-        // TODO: thread
-        group = GroupManager.getGroupByID(id);
+        group = DataManager.getDataManager().getGroup(id);
 
         // Set id values for fragments
         viewModel = ViewModelProviders.of(this).get(ItemViewModel.class);

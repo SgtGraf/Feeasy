@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.feeasy.R;
-import com.example.feeasy.entities.User;
 
 public class ProfileActivity extends AppCompatActivity {
 

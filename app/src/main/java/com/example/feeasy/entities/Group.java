@@ -1,6 +1,7 @@
 package com.example.feeasy.entities;
 
 import java.util.List;
+import java.util.Vector;
 
 public class Group {
     public int id;
@@ -13,10 +14,19 @@ public class Group {
 
     public Group(int id, String name, List<GroupMember> groupMembers, List<Fee> fees, List<FeePreset> presets) {
         this.id = id;
-        totalFees = 0;
-        groupName = name;
-        members = groupMembers;
+        this.groupName = name;
+        this.members = groupMembers;
         this.fees = fees;
         this.presets = presets;
+
+        totalFees = 0;
+    }
+
+    public Group(int id, String name){
+        this.id = id;
+        this.groupName = name;
+        this.members = new Vector<>();
+        this.fees = new Vector<>();
+        this.presets = new Vector<>();
     }
 }
