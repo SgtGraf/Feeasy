@@ -40,6 +40,10 @@ public class DataManager {
         return groupList;
     }
 
+    public void setDisplayName(String name){
+        getLoggedInUser().name = name;
+    }
+
     public Group getGroup(int id){
         for (Group group:groupList) {
             if(group.id == id){
@@ -133,4 +137,8 @@ public class DataManager {
         return String.format("%.2f",sum) + "€";
     }
 
+    public void signOut(){
+        loggedInUser = null;
+        groupList = new Vector<Group>();
+    }
 }

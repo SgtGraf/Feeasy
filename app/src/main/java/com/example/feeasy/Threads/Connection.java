@@ -123,6 +123,11 @@ public class Connection {
                             loadFeesOfUser(response);
                         }
                         break;
+
+                    case UPDATE_MEMBER:
+                        if(isValidResponse(executePUTRequest("user", requestBody))){
+                            updateUser(jsonObject.getString("name"));
+                        }
                     default:
                         Log.wtf("error:", "How did you even get here?");
                 }
@@ -294,6 +299,11 @@ public class Connection {
             JSONArray responseArray = new JSONArray(response);
             DataManager.getDataManager().addFeesToMember(jsonObject.getInt("group_id"),jsonObject.getInt("user_id"),buildFeeListFromResponse(responseArray));
             notifyHandler(action,0);
+
+        public void updateUser(String displayname) throws JSONException{
+
+            DataManager.getDataManager().setDisplayName(displayname);
+
         }
 
         // OBJECT BUILDER (RESPONSE)
