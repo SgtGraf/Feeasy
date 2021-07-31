@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.feeasy.Threads.Connection;
+import com.example.feeasy.activities.GroupActivity;
 import com.example.feeasy.dataManagement.AppDataManager;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterMembers;
@@ -36,6 +36,8 @@ public class MembersFragment extends Fragment {
     int groupId;
     Group group;
     AdapterMembers adapter;
+
+    boolean loadedFees;
 
     Handler handler = new MemberFragmentHandler(Looper.getMainLooper());
 
@@ -90,6 +92,23 @@ public class MembersFragment extends Fragment {
                         @Override
                         public void run() {
                             adapter.notifyDataSetChanged();
+                            ((GroupActivity)getActivity()).updateSum();
+                            if(!loadedFees){
+                                Connection connection = new Connection();
+                                connection.handleAction(ActionNames.ALL_FEES_OF_GROUP,buildJSONObject(group.id));
+                                loadedFees = true;
+                            }
+                        }
+                    });
+                }
+            }
+            if(msg.obj == ActionNames.ALL_FEES_OF_GROUP){
+                if(msg.arg1 == 0){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            ((GroupActivity)getActivity()).updateSum();
                         }
                     });
                 }

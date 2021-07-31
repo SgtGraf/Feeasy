@@ -18,8 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.feeasy.Threads.Connection;
+import com.example.feeasy.activities.GroupActivity;
 import com.example.feeasy.dataManagement.AppDataManager;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterFees;
@@ -48,7 +48,6 @@ public class FeesFragment extends Fragment {
             @Override
             public void onChanged(Group grp) {
                 group =  grp;
-                assert GroupManager.getGroupByID(groupId) != null;
                 adapter = new AdapterFees(getContext(), group.fees, group);
                 recyclerView = v.findViewById(R.id.feeRecycler);
                 recyclerView.setAdapter(adapter);
@@ -94,8 +93,15 @@ public class FeesFragment extends Fragment {
                         @Override
                         public void run() {
                             adapter.notifyDataSetChanged();
+                            ((GroupActivity)getActivity()).updateSum();
                         }
                     });
+                }
+            }
+            if(msg.obj == ActionNames.SET_FEE_STATUS){
+                if(msg.arg1 == 0){
+                    Connection connection = new Connection();
+                    connection.handleAction(ActionNames.ALL_FEES_OF_GROUP,buildJSONObject(group.id));
                 }
             }
         }

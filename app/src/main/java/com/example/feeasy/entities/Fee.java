@@ -9,14 +9,27 @@ public class Fee {
     public String date;
     public FeeStatus status;
 
-    public Fee(int id, String name, Group group, GroupMember groupMember, float amount, String date) {
+    public Fee(int id, String name, Group group, GroupMember groupMember, float amount, String status) {
         this.id = id;
         this.name = name;
         this.group = group;
         this.groupMember = groupMember;
         this.amount = amount;
         this.date = date;
-        this.status = FeeStatus.ACCEPTED; // TODO: remove later
+        this.status = convertStringToStatus(status);
+    }
+
+    private FeeStatus convertStringToStatus(String status){
+        switch (status) {
+            case "declined":
+                return FeeStatus.DECLINED;
+            case "requested":
+                return FeeStatus.REQUESTED;
+            case "completed":
+                return FeeStatus.COMPLETED;
+            default:
+                return FeeStatus.ACCEPTED;
+        }
     }
 
 }

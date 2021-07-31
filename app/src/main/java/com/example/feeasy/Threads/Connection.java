@@ -10,6 +10,7 @@ import com.example.feeasy.dataManagement.AppDataManager;
 import com.example.feeasy.dataManagement.DataManager;
 import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Fee;
+import com.example.feeasy.entities.FeePreset;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
 import com.example.feeasy.entities.LoggedInUser;
@@ -68,13 +69,13 @@ public class Connection {
 
                     case CREATE_FEE:
                         if(isValidResponse(executePOSTRequest("fee", requestBody))){
-                            // TODO
+                            addFee(response);
                         }
                         break;
 
                     case SAVE_PRESET:
                         if(isValidResponse(executePOSTRequest("preset", requestBody))){
-                            // TODO
+                            savePreset(response);
                         }
                         break;
 
@@ -91,7 +92,7 @@ public class Connection {
 
                     case SET_FEE_STATUS:
                         if(isValidResponse(executePUTRequest("fee", requestBody))){
-                            // TODO
+                            updateFeeStatus(response);
                         }
                         break;
 
@@ -114,7 +115,12 @@ public class Connection {
                         break;
                     case ALL_PRESETS_OF_GROUP:
                         if(isValidResponse(executeGETRequest("preset?group_id=" + jsonObject.getInt("group_id")))){
-                            // TODO
+                            loadPresets(response);
+                        }
+                        break;
+                    case FEES_OF_USER_IN_GROUP:
+                        if(isValidResponse(executeGETRequest("fee?group_id=" + jsonObject.getInt("group_id") + "&user_id=" + jsonObject.getInt("user_id")))){
+                            loadFeesOfUser(response);
                         }
                         break;
                     default:
@@ -123,6 +129,7 @@ public class Connection {
 
             }catch (IOException | JSONException e) {
                 notifyHandler(action,-1);
+                e.printStackTrace();
             }
         }
 
@@ -262,6 +269,33 @@ public class Connection {
             notifyHandler(action,0);
         }
 
+        private void addFee(String response) throws JSONException{
+            // No immediate data transfer needed
+            notifyHandler(action,0);
+        }
+
+        private void updateFeeStatus(String response) throws JSONException{
+            // Data transfer in seperate call in Handler
+            notifyHandler(action,0);
+        }
+
+        private void savePreset(String response) throws JSONException{
+            // Data transfer in seperate call in Handler
+            notifyHandler(action,0);
+        }
+
+        private void loadPresets(String response) throws JSONException{
+            JSONArray responseArray = new JSONArray(response);
+            DataManager.getDataManager().loadPresets(jsonObject.getInt("group_id"), buildPresetListFromResponse(responseArray));
+            notifyHandler(action,0);
+        }
+
+        private void loadFeesOfUser(String response) throws JSONException{
+            JSONArray responseArray = new JSONArray(response);
+            DataManager.getDataManager().addFeesToMember(jsonObject.getInt("group_id"),jsonObject.getInt("user_id"),buildFeeListFromResponse(responseArray));
+            notifyHandler(action,0);
+        }
+
         // OBJECT BUILDER (RESPONSE)
         //------------------------------------------------------------------------------------------
 
@@ -277,7 +311,7 @@ public class Connection {
         private List<GroupMember> buildMemberListFromResponse(JSONArray array)throws JSONException{
             Vector<GroupMember> members = new Vector<>();
             for (int i = 0; i < array.length(); i++) {
-                JSONObject object = array.getJSONObject(i); // TODO: Set Admin the right way
+                JSONObject object = array.getJSONObject(i);
                 members.add(new GroupMember(object.getString("name"),false,object.getInt("id")));
             }
             return members;
@@ -290,9 +324,18 @@ public class Connection {
                 fees.add(new Fee(object.getInt("id"), object.getString("name"),
                         DataManager.getDataManager().getGroup(jsonObject.getInt("group_id")),
                         DataManager.getDataManager().getMemberOfGroup(jsonObject.getInt("group_id"),object.getInt("user_id")),
-                        (float) object.getDouble("amount"),""));
+                        (float)object.getDouble("amount"), object.getString("status")));
             }
             return fees;
+        }
+
+        private List<FeePreset> buildPresetListFromResponse(JSONArray array) throws JSONException{
+            Vector<FeePreset> presets = new Vector<>();
+            for (int i = 0; i < array.length(); i++){
+                JSONObject object = array.getJSONObject(i);
+                presets.add(new FeePreset(object.getString("name"),DataManager.getDataManager().getGroup(jsonObject.getInt("group_id")), (float)object.getDouble("amount")));
+            }
+            return presets;
         }
     }
 }

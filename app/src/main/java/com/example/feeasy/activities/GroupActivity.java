@@ -12,15 +12,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.feeasy.Threads.Connection;
 import com.example.feeasy.dataManagement.DataManager;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.dataManagement.ItemViewModel;
 import com.example.feeasy.R;
 import com.example.feeasy.adapters.AdapterFragmentGroup;
-import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.google.android.material.tabs.TabLayout;
 
@@ -60,7 +56,7 @@ public class GroupActivity extends AppCompatActivity {
         // Set strings
         assert group != null;
         groupNameView.setText(group.groupName);
-        totalAmtView.setText(Float.toString(GroupManager.getFeeSumByGroup(group)));
+        totalAmtView.setText(DataManager.getDataManager().getCombinedFeeOfGroup(group.id));
     }
 
     //public void set
@@ -100,7 +96,7 @@ public class GroupActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        totalAmtView.setText(Float.toString(GroupManager.getFeeSumByGroup(group)));
+        totalAmtView.setText(DataManager.getDataManager().getCombinedFeeOfGroup(group.id));
         super.onResume();
     }
     @Override
@@ -117,5 +113,9 @@ public class GroupActivity extends AppCompatActivity {
         startActivity(intent);
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateSum(){
+        totalAmtView.setText(DataManager.getDataManager().getCombinedFeeOfGroup(group.id));
     }
 }

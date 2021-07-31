@@ -1,8 +1,12 @@
 package com.example.feeasy.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,7 +16,8 @@ import android.widget.Toast;
 
 import com.example.feeasy.R;
 import com.example.feeasy.Threads.Connection;
-import com.example.feeasy.dataManagement.GroupManager;
+import com.example.feeasy.dataManagement.AppDataManager;
+import com.example.feeasy.dataManagement.DataManager;
 import com.example.feeasy.entities.ActionNames;
 import com.example.feeasy.entities.Group;
 import com.example.feeasy.entities.GroupMember;
@@ -28,14 +33,19 @@ public class AddFeeActivity extends AppCompatActivity {
     CheckBox saveAsPreset;
     EditText feeName;
     EditText feeAmount;
+    Button addButton;
+
+    boolean backAllowed = true;
+
+    Handler handler = new AddFeeHandler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fee);
 
-        group = GroupManager.getGroupByID(getIntent().getIntExtra("groupId",-1));
-        member = GroupManager.getMemberFromGroupById(group,getIntent().getIntExtra("memberId",-1));
+        group = DataManager.getDataManager().getGroup(getIntent().getIntExtra("groupId",-1));
+        member = DataManager.getDataManager().getMemberOfGroup(group.id, getIntent().getIntExtra("memberId", -1));
 
         TextView memberNameView = findViewById(R.id.add_fee_member_name);
         memberNameView.setText(member.name);
@@ -43,7 +53,7 @@ public class AddFeeActivity extends AppCompatActivity {
         saveAsPreset = findViewById(R.id.add_fee_save_preset);
         feeName = findViewById(R.id.add_fee_name);
         feeAmount = findViewById(R.id.add_fee_amount);
-        Button addButton = findViewById(R.id.add_fee_button_confirm);
+        addButton = findViewById(R.id.add_fee_button_confirm);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,32 +63,11 @@ public class AddFeeActivity extends AppCompatActivity {
                 if(name.length() > 0 && name.length() <= 100 && !amountValue.isEmpty()){
                     float amount = Float.parseFloat(amountValue);
                     if(amount > 0){
-                        // TODO: thread
-                        GroupManager.createFee(name,group,member,amount,"00.00.0000");
-
-                        // Pass to Thread
                         Connection connection = new Connection();
-
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject
-                                    .put("name", name)
-                                    .put("group_id", group.id)
-                                    .put("user_id", member.id)
-                                    .put("amount", amount);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        connection.handleAction(ActionNames.CREATE_FEE, jsonObject);
-
+                        connection.handleAction(ActionNames.CREATE_FEE, buildJSONObject1(name,group.id, member.id, amount));
                         if(saveAsPreset.isChecked()){
-                            // TODO: thread
-                            connection.handleAction(ActionNames.SAVE_PRESET, jsonObject);
-                            GroupManager.createFeePreset(name,group,amount);
+                            connection.handleAction(ActionNames.SAVE_PRESET, buildJSONObject2(name,group.id, amount));
                         }
-                        onBackPressed();
                     }
                     else{
                         Toast.makeText(getApplicationContext(),"Amount must be higher than 0.",Toast.LENGTH_SHORT).show();
@@ -93,5 +82,71 @@ public class AddFeeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private JSONObject buildJSONObject1(String name, int groupId, int userId, float amount){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name).put("group_id", groupId).put("user_id", userId).put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    private JSONObject buildJSONObject2(String name, int groupId, float amount){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name).put("group_id", groupId).put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    @Override
+    protected void onResume() {
+        AppDataManager.getAppDataManager().setCurrentHandler(handler);
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(backAllowed){
+            super.onBackPressed();
+        }
+    }
+
+    private class AddFeeHandler extends Handler{
+
+        public AddFeeHandler(Looper looper){
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if(msg.obj == ActionNames.CREATE_FEE){
+                if(msg.arg1 == 0){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),"Fee added.",Toast.LENGTH_SHORT).show();
+                            backAllowed = true;
+                            onBackPressed();
+                        }
+                    });
+                }
+                else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            backAllowed = true;
+                            addButton.setEnabled(true);
+                            Toast.makeText(getApplicationContext(),"Fee could not be added.",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }
     }
 }

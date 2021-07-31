@@ -2,7 +2,6 @@ package com.example.feeasy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.feeasy.activities.GroupMemberActivity;
+import com.example.feeasy.dataManagement.AppDataManager;
+import com.example.feeasy.dataManagement.DataManager;
 import com.example.feeasy.entities.Group;
-import com.example.feeasy.dataManagement.GroupManager;
 import com.example.feeasy.entities.GroupMember;
 import com.example.feeasy.R;
 
@@ -57,13 +57,11 @@ public class AdapterMembers extends RecyclerView.Adapter<AdapterMembers.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final AdapterMembers.ViewHolder holder, final int position) {
         holder.memberName.setText(groupMembers.get(position).name);
-        holder.memberFees.setText(GroupManager.getFeeSumByMember(group,groupMembers.get(position)) + "$");
+        holder.memberFees.setText(DataManager.getDataManager().getCombinedFeeOfUser(group.id,groupMembers.get(position).id));
         holder.clickableView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                // TODO: Open quick fee
-                Log.i("NAME", groupMembers.get(position).name);
                 Intent intent = new Intent(context, GroupMemberActivity.class);
                 intent.putExtra("memberId", groupMembers.get(position).id);
                 intent.putExtra("groupId", group.id);
