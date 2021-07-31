@@ -27,7 +27,6 @@ public class ProfileActivity extends AppCompatActivity {
     Connection connection = new Connection();
     DataManager dataManager;
     TextView username;
-    TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
