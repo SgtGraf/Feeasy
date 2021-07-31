@@ -38,6 +38,10 @@ public class DataManager {
         return groupList;
     }
 
+    public void setDisplayName(String name){
+        getLoggedInUser().name = name;
+    }
+
     public Group getGroup(int id){
         for (Group group:groupList) {
             if(group.id == id){
