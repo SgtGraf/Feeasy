@@ -17,15 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_account" />
 
-    <TextView
-        android:id="@+id/profile_mail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Email: "
-        app:layout_constraintStart_toStartOf="@+id/profile_picture"
-        app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
-
     <EditText
         android:id="@+id/profile_displayname_input"
         android:layout_width="wrap_content"
