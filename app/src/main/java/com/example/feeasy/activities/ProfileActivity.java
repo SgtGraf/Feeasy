@@ -27,7 +27,6 @@ public class ProfileActivity extends AppCompatActivity {
     Connection connection = new Connection();
     DataManager dataManager;
     TextView username;
-    TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("name", username.getText());
@@ -50,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 updateDisplayname(jsonObject);
+                onBackPressed();
             }
         });
     }
@@ -69,7 +69,7 @@ public class ProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void logout() {
+    private void signOut() {
         dataManager.signOut();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         b.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logout();
+                signOut();
             }
         });
         b.setNegativeButton("CANCEL", null);
