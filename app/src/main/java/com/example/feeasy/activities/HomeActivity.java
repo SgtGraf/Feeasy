@@ -104,7 +104,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()){
             case R.id.item1:
-                Toast.makeText(this, "ACCOUNT", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
