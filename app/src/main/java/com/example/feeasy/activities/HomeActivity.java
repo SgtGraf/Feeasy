@@ -73,10 +73,8 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.item2:
-                Toast.makeText(this, "PLACEHOLDER1", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.item3:
-                Toast.makeText(this, "PLACEHOLDER2", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
                 return true;
             default: super.onOptionsItemSelected(item);
         }
