@@ -76,7 +76,7 @@ public class AdapterFees extends RecyclerView.Adapter<AdapterFees.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final AdapterFees.ViewHolder holder, final int position) {
         holder.memberName.setText(fees.get(position).groupMember.name);
-        holder.memberFees.setText(fees.get(position).amount + "€");
+        holder.memberFees.setText(String.format("%.2f",fees.get(position).amount) + "€");
         holder.feeName.setText(fees.get(position).name);
         if(fees.get(position).status == FeeStatus.ACCEPTED){
             ImageViewCompat.setImageTintList(holder.status, ColorStateList.valueOf(ContextCompat.getColor(context,R.color.colorStatusRed)));
