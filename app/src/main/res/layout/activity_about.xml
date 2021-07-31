@@ -16,4 +16,74 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/about_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Team"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_title" />
+
+    <TextView
+        android:id="@+id/about_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Members"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_separator" />
+
+    <TextView
+        android:id="@+id/about_teamname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Monkey Stole My Pants"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/about_team"
+        app:layout_constraintStart_toStartOf="@+id/about_team"
+        app:layout_constraintTop_toBottomOf="@+id/about_team" />
+
+    <TextView
+        android:id="@+id/about_member1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Fabian Schaffenrath"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/about_members"
+        app:layout_constraintStart_toStartOf="@+id/about_members"
+        app:layout_constraintTop_toBottomOf="@+id/about_members" />
+
+    <TextView
+        android:id="@+id/about_member2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Roman Graf"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/about_members"
+        app:layout_constraintStart_toStartOf="@+id/about_members"
+        app:layout_constraintTop_toBottomOf="@+id/about_member1" />
+
+    <View
+        android:id="@+id/about_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_teamname" />
 </androidx.constraintlayout.widget.ConstraintLayout>
