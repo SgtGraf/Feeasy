@@ -127,6 +127,8 @@ public class UserFeesFragment extends Fragment {
                         @Override
                         public void run() {
                             Toast.makeText(getContext(), "Added fee to " + groupMember.name, Toast.LENGTH_SHORT).show();
+                            Connection connection = new Connection();
+                            connection.handleAction(ActionNames.ALL_FEES_OF_GROUP,buildJSONObject(group.id));
                         }
                     });
                 }

@@ -131,6 +131,8 @@ public class AddFeeActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(),"Fee added.",Toast.LENGTH_SHORT).show();
+                            Connection connection = new Connection();
+                            connection.handleAction(ActionNames.ALL_FEES_OF_GROUP,buildJSONObject(group.id));
                             backAllowed = true;
                             onBackPressed();
                         }
@@ -147,6 +149,16 @@ public class AddFeeActivity extends AppCompatActivity {
                     });
                 }
             }
+        }
+
+        public JSONObject buildJSONObject(int groupId){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("group_id", groupId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
         }
     }
 }
