@@ -299,6 +299,7 @@ public class Connection {
             JSONArray responseArray = new JSONArray(response);
             DataManager.getDataManager().addFeesToMember(jsonObject.getInt("group_id"),jsonObject.getInt("user_id"),buildFeeListFromResponse(responseArray));
             notifyHandler(action,0);
+        }
 
         public void updateUser(String displayname) throws JSONException{
 
